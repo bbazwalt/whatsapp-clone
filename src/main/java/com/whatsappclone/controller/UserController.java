@@ -41,14 +41,11 @@ public class UserController {
 	}
 	
 	@PutMapping("/update")
-	public ResponseEntity<ApiResponse> updateUserHandler(@RequestBody UpdateUserRequest req, 
-														 @RequestHeader("Authorization") String token) throws UserException{
+	public ResponseEntity<ApiResponse> updateUserHandler(@RequestBody UpdateUserRequest req, @RequestHeader("Authorization") String token) throws UserException{
 		User user = userService.findUserProfile(token);
 		userService.updateUser(user.getId(), req);
 		ApiResponse res= new ApiResponse ("User updated successfully",true);
 		return new ResponseEntity<ApiResponse> (res, HttpStatus.ACCEPTED);
 	}
-	
-
 	
 }
