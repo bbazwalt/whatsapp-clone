@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class HomeController {
-	
+
 	@GetMapping("/")
-	public ResponseEntity<String> HomeController(){
-		return new ResponseEntity<String>("Test",HttpStatus.OK);
+	public ResponseEntity<String> HomeController() {
+		return new ResponseEntity<String>("Test", HttpStatus.OK);
 	}
 
 }

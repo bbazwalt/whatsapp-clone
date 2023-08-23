@@ -12,50 +12,37 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 
 @RestControllerAdvice
 public class GlobeException {
-	
-	
+
 	@ExceptionHandler(UserException.class)
-	public ResponseEntity<ErrorDetail> UserExceptionHandler(UserException e, WebRequest req){
-		
-		ErrorDetail err = new ErrorDetail(e.getMessage(),req.getDescription(false),LocalDateTime.now());
-		
-		return new ResponseEntity<ErrorDetail>(err, HttpStatus.BAD_REQUEST);	
+	public ResponseEntity<ErrorDetail> UserExceptionHandler(UserException e, WebRequest req) {
+		ErrorDetail err = new ErrorDetail(e.getMessage(), req.getDescription(false), LocalDateTime.now());
+		return new ResponseEntity<ErrorDetail>(err, HttpStatus.BAD_REQUEST);
 	}
-	
+
 	@ExceptionHandler(MessageException.class)
-	public ResponseEntity<ErrorDetail> MessageExceptionHandler(MessageException ue, WebRequest req){
-		
-		ErrorDetail err = new ErrorDetail(ue.getMessage(),req.getDescription(false),LocalDateTime.now());
-		
-		return new ResponseEntity<ErrorDetail>(err, HttpStatus.BAD_REQUEST);	
+	public ResponseEntity<ErrorDetail> MessageExceptionHandler(MessageException ue, WebRequest req) {
+		ErrorDetail err = new ErrorDetail(ue.getMessage(), req.getDescription(false), LocalDateTime.now());
+		return new ResponseEntity<ErrorDetail>(err, HttpStatus.BAD_REQUEST);
 	}
-	
+
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ResponseEntity<ErrorDetail> MethodArgumentNotValidExceptionHandler(MethodArgumentNotValidException me, WebRequest req){
-		
+	public ResponseEntity<ErrorDetail> MethodArgumentNotValidExceptionHandler(MethodArgumentNotValidException me,
+			WebRequest req) {
 		String error = me.getBindingResult().getFieldError().getDefaultMessage();
-		
-		ErrorDetail err = new ErrorDetail("Endpoint not found",error,LocalDateTime.now());
-		
-		return new ResponseEntity<ErrorDetail>(err, HttpStatus.BAD_REQUEST);	
+		ErrorDetail err = new ErrorDetail("Endpoint not found", error, LocalDateTime.now());
+		return new ResponseEntity<ErrorDetail>(err, HttpStatus.BAD_REQUEST);
 	}
-	
+
 	@ExceptionHandler(NoHandlerFoundException.class)
-	public ResponseEntity<ErrorDetail> handleNoHandlerFoundException(NoHandlerFoundException ex, WebRequest req){
-		
-		ErrorDetail error = new ErrorDetail("Endpoint not found",ex.getMessage(),LocalDateTime.now());
-		
-		return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);	
+	public ResponseEntity<ErrorDetail> handleNoHandlerFoundException(NoHandlerFoundException ex, WebRequest req) {
+		ErrorDetail error = new ErrorDetail("Endpoint not found", ex.getMessage(), LocalDateTime.now());
+		return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
 	}
 
-	
 	@ExceptionHandler(Exception.class)
-	public ResponseEntity<ErrorDetail> otherExceptionHandler(Exception e, WebRequest req){
-		
-		ErrorDetail err = new ErrorDetail(e.getMessage(),req.getDescription(false),LocalDateTime.now());
-		
-		return new ResponseEntity<ErrorDetail>(err, HttpStatus.BAD_REQUEST);	
+	public ResponseEntity<ErrorDetail> otherExceptionHandler(Exception e, WebRequest req) {
+		ErrorDetail err = new ErrorDetail(e.getMessage(), req.getDescription(false), LocalDateTime.now());
+		return new ResponseEntity<ErrorDetail>(err, HttpStatus.BAD_REQUEST);
 	}
 
-	
 }

@@ -23,14 +23,12 @@ public class AppConfig {
 
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
 		http.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(
 						authorize -> authorize.requestMatchers("/api/**").authenticated().anyRequest().permitAll())
 				.addFilterBefore(new JwtTokenValidator(), BasicAuthenticationFilter.class).csrf(csrf -> {
 					try {
 						csrf.disable().cors(cors -> cors.configurationSource(new CorsConfigurationSource() {
-
 							@Override
 							public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
 
@@ -41,16 +39,13 @@ public class AppConfig {
 								cfg.setAllowedHeaders(Collections.singletonList("*"));
 								cfg.setExposedHeaders(Arrays.asList("Authorization"));
 								cfg.setMaxAge(3600L);
-
 								return cfg;
 							}
-
 						}));
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				}).formLogin(withDefaults()).httpBasic(withDefaults());
-
 		return http.build();
 	}
 

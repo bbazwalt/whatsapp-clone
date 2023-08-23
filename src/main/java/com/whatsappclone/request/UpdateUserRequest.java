@@ -2,34 +2,31 @@ package com.whatsappclone.request;
 
 public class UpdateUserRequest {
 
-	private String full_name;
-	private String profile_picture;
-	
+	private String fullName;
+	private String profilePicture;
+
 	public UpdateUserRequest() {
-		
 	}
 
-	public UpdateUserRequest(String full_name, String profile_picture) {
-		super();
-		this.full_name = full_name;
-		this.profile_picture = profile_picture;
+	public UpdateUserRequest(String fullName, String profilePicture) {
+		this.fullName = fullName;
+		this.profilePicture = profilePicture;
 	}
 
-	public String getFull_name() {
-		return full_name;
+	public String getFullName() {
+		return fullName;
 	}
 
-	public void setFull_name(String full_name) {
-		this.full_name = full_name;
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
 	}
 
-	public String getProfile_picture() {
-		return profile_picture;
+	public String getProfilePicture() {
+		return profilePicture;
 	}
 
-	public void setProfile_picture(String profile_picture) {
-		this.profile_picture = profile_picture;
+	public void setProfilePicture(String profilePicture) {
+		this.profilePicture = profilePicture;
 	}
-	
-	
+
 }

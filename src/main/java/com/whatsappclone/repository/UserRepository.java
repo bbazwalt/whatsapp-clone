@@ -9,11 +9,10 @@ import org.springframework.data.repository.query.Param;
 import com.whatsappclone.modal.User;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
-	
-	public User findByEmail (String email);
-	
-	@Query("select u from user u where u.full_name Like %:query% or u.email Like %:query%")
+
+	public User findByEmail(String email);
+
+	@Query("SELECT u FROM User u WHERE u.fullName LIKE %:query% OR u.email LIKE %:query%")
 	public List<User> searchUser(@Param("query") String query);
-	
 
 }
