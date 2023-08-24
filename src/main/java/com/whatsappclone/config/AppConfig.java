@@ -31,7 +31,6 @@ public class AppConfig {
 						csrf.disable().cors(cors -> cors.configurationSource(new CorsConfigurationSource() {
 							@Override
 							public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
-
 								CorsConfiguration cfg = new CorsConfiguration();
 								cfg.setAllowedOrigins(Arrays.asList("http://localhost:3000/"));
 								cfg.setAllowedMethods(Collections.singletonList("*"));

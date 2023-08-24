@@ -9,13 +9,24 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.whatsappclone.modal.User;
+import com.whatsappclone.model.User;
 import com.whatsappclone.repository.UserRepository;
 
 @Service
 public class CustomUserService implements UserDetailsService {
 
 	private UserRepository userRepository;
+	
+	public CustomUserService() {
+	}
+
+	public UserRepository getUserRepository() {
+		return userRepository;
+	}
+
+	public void setUserRepository(UserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
 
 	public CustomUserService(UserRepository userRepository) {
 		this.userRepository = userRepository;

@@ -11,7 +11,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 @RestControllerAdvice
-public class GlobeException {
+public class GlobalExceptionHandler {
 
 	@ExceptionHandler(UserException.class)
 	public ResponseEntity<ErrorDetail> UserExceptionHandler(UserException e, WebRequest req) {
@@ -21,6 +21,12 @@ public class GlobeException {
 
 	@ExceptionHandler(MessageException.class)
 	public ResponseEntity<ErrorDetail> MessageExceptionHandler(MessageException ue, WebRequest req) {
+		ErrorDetail err = new ErrorDetail(ue.getMessage(), req.getDescription(false), LocalDateTime.now());
+		return new ResponseEntity<ErrorDetail>(err, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(ChatException.class)
+	public ResponseEntity<ErrorDetail> ChatExceptionHandler(ChatException ue, WebRequest req) {
 		ErrorDetail err = new ErrorDetail(ue.getMessage(), req.getDescription(false), LocalDateTime.now());
 		return new ResponseEntity<ErrorDetail>(err, HttpStatus.BAD_REQUEST);
 	}

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.whatsappclone.exception.UserException;
-import com.whatsappclone.modal.User;
+import com.whatsappclone.model.User;
 import com.whatsappclone.request.UpdateUserRequest;
 import com.whatsappclone.response.ApiResponse;
 import com.whatsappclone.service.UserService;
@@ -25,6 +25,7 @@ public class UserController {
 	private UserService userService;
 
 	private UserController(UserService userService) {
+		super();
 		this.userService = userService;
 	}
 

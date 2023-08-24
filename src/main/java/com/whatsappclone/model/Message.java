@@ -1,4 +1,4 @@
-package com.whatsappclone.modal;
+package com.whatsappclone.model;
 
 import java.time.LocalDateTime;
 
@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
@@ -13,7 +14,7 @@ public class Message {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer id;
+	private Long id;
 
 	private String content;
 	private LocalDateTime timestamp;
@@ -22,12 +23,14 @@ public class Message {
 	private User user;
 
 	@ManyToOne
+	@JoinColumn(name="chat_id")
 	private Chat chat;
 
 	public Message() {
 	}
 
-	public Message(Integer id, String content, LocalDateTime timestamp, User user, Chat chat) {
+	public Message(Long id, String content, LocalDateTime timestamp, User user, Chat chat) {
+		super();
 		this.id = id;
 		this.content = content;
 		this.timestamp = timestamp;
@@ -35,11 +38,11 @@ public class Message {
 		this.chat = chat;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

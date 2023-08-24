@@ -8,23 +8,43 @@ import org.springframework.stereotype.Service;
 
 import com.whatsappclone.config.TokenProvider;
 import com.whatsappclone.exception.UserException;
-import com.whatsappclone.modal.User;
+import com.whatsappclone.model.User;
 import com.whatsappclone.repository.UserRepository;
 import com.whatsappclone.request.UpdateUserRequest;
 
 @Service
-public class UserServiceImplementation implements UserService {
+public class UserServiceImpl implements UserService {
 
 	private UserRepository userRepository;
 	private TokenProvider tokenProvider;
+	
+	public UserServiceImpl() {
+	}
 
-	public UserServiceImplementation(UserRepository userRepository, TokenProvider tokenProvider) {
+	public UserRepository getUserRepository() {
+		return userRepository;
+	}
+
+	public void setUserRepository(UserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
+
+	public TokenProvider getTokenProvider() {
+		return tokenProvider;
+	}
+
+	public void setTokenProvider(TokenProvider tokenProvider) {
+		this.tokenProvider = tokenProvider;
+	}
+
+	public UserServiceImpl(UserRepository userRepository, TokenProvider tokenProvider) {
+		super();
 		this.userRepository = userRepository;
 		this.tokenProvider = tokenProvider;
 	}
 
 	@Override
-	public User findUserById(Integer id) throws UserException {
+	public User findUserById(Long id) throws UserException {
 		Optional<User> opt = userRepository.findById(id);
 		if (opt.isPresent()) {
 			return opt.get();
@@ -47,13 +67,13 @@ public class UserServiceImplementation implements UserService {
 	}
 
 	@Override
-	public User updateUser(Integer userId, UpdateUserRequest req) throws UserException {
+	public User updateUser(Long userId, UpdateUserRequest req) throws UserException {
 		User user = findUserById(userId);
-		if (req.getFullName() != null) {
-			user.setFullName(req.getFullName());
+		if (req.getFull_name() != null) {
+			user.setFull_name(req.getFull_name());
 		}
-		if (req.getProfilePicture() != null) {
-			user.setProfilePicture(req.getProfilePicture());
+		if (req.getProfile_picture() != null) {
+			user.setProfile_picture(req.getProfile_picture());
 		}
 		return userRepository.save(user);
 	}

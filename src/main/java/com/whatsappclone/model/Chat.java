@@ -1,10 +1,11 @@
-package com.whatsappclone.modal;
+package com.whatsappclone.model;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,61 +20,65 @@ public class Chat {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer id;
+	private Long id;
 
-	private String chatName;
-	private String chatImage;
+	private String chat_name;
+	private String chat_image;
 
 	@Column(name = "is_group")
 	private boolean isGroup;
 
-	@Column(name = "created_by")
+	@JoinColumn(name = "created_by")
 	@ManyToOne
-	private boolean createdBy;
+	private User createdBy;
 
 	@ManyToMany
 	private Set<User> users = new HashSet<>();
 
+	@ManyToMany
+	private Set<User> admins = new HashSet<>();
+	
 	@OneToMany
 	private List<Message> messages = new ArrayList<>();
 
 	public Chat() {
 	}
 
-	public Chat(Integer id, String chatName, String chatImage, boolean isGroup, boolean createdBy, Set<User> users,
-			List<Message> messages) {
+	public Chat(Long id, String chat_name, String chat_image, boolean isGroup, User createdBy, Set<User> users,
+			Set<User> admins, List<Message> messages) {
 		super();
 		this.id = id;
-		this.chatName = chatName;
-		this.chatImage = chatImage;
+		this.chat_name = chat_name;
+		this.chat_image = chat_image;
 		this.isGroup = isGroup;
 		this.createdBy = createdBy;
 		this.users = users;
+		this.admins = admins;
 		this.messages = messages;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public String getChatName() {
-		return chatName;
+	public String getChat_name() {
+		return chat_name;
 	}
 
-	public void setChatName(String chatName) {
-		this.chatName = chatName;
+	public void setChat_name(String chat_name) {
+		this.chat_name = chat_name;
 	}
 
-	public String getChatImage() {
-		return chatImage;
+	public String getChat_image() {
+		return chat_image;
 	}
 
-	public void setChatImage(String chatImage) {
-		this.chatImage = chatImage;
+	public void setChat_image(String chat_image) {
+		this.chat_image = chat_image;
 	}
 
 	public boolean isGroup() {
@@ -83,12 +88,12 @@ public class Chat {
 	public void setGroup(boolean isGroup) {
 		this.isGroup = isGroup;
 	}
-
-	public boolean isCreatedBy() {
+	
+	public User getCreatedBy() {
 		return createdBy;
 	}
 
-	public void setCreatedBy(boolean createdBy) {
+	public void setCreatedBy(User createdBy) {
 		this.createdBy = createdBy;
 	}
 
@@ -98,6 +103,14 @@ public class Chat {
 
 	public void setUsers(Set<User> users) {
 		this.users = users;
+	}
+	
+	public Set<User> getAdmins() {
+		return admins;
+	}
+
+	public void setAdmins(Set<User> admins) {
+		this.admins = admins;
 	}
 
 	public List<Message> getMessages() {

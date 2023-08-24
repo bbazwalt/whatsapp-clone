@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.whatsappclone.config.TokenProvider;
 import com.whatsappclone.exception.UserException;
-import com.whatsappclone.modal.User;
+import com.whatsappclone.model.User;
 import com.whatsappclone.repository.UserRepository;
 import com.whatsappclone.request.LoginRequest;
 import com.whatsappclone.response.AuthResponse;
@@ -32,6 +32,7 @@ public class AuthController {
 
 	public AuthController(UserRepository userRepository, PasswordEncoder passwordEncoder,
 			CustomUserService customUserService) {
+		super();
 		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.customUserService = customUserService;
@@ -40,7 +41,7 @@ public class AuthController {
 	@PostMapping("/signup")
 	public ResponseEntity<AuthResponse> createUserHandler(@RequestBody User user) throws UserException {
 		String email = user.getEmail();
-		String fullName = user.getFullName();
+		String fullName = user.getFull_name();
 		String password = user.getPassword();
 		User isUser = userRepository.findByEmail(email);
 		if (isUser != null) {
@@ -48,7 +49,7 @@ public class AuthController {
 		}
 		User createdUser = new User();
 		createdUser.setEmail(email);
-		createdUser.setFullName(fullName);
+		createdUser.setFull_name(fullName);
 		createdUser.setPassword(passwordEncoder.encode(password));
 		userRepository.save(createdUser);
 		Authentication authentication = new UsernamePasswordAuthenticationToken(email, password);
