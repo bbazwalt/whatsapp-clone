@@ -9,10 +9,10 @@
 		<version>3.1.2</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.backend</groupId>
-	<artifactId>whatsapp-clone</artifactId>
+	<groupId>com.whatsapp</groupId>
+	<artifactId>backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>whatsapp-clone</name>
+	<name>whatsapp-backend</name>
 	<description>Whatsapp Clone Web App</description>
 	<properties>
 		<java.version>17</java.version>
