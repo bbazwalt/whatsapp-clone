@@ -9,28 +9,41 @@ import {
   BsThreeDotsVertical,
 } from "react-icons/bs";
 import { ImAttachment } from "react-icons/im";
-import ChatCard from "./ChatCard/ChatCard";
-import MessageCard from "./MessageCard/MessageCard";
-import logo from "./defaultlogo.png"
-import wallpaper from "./wallpaper.jpg"
+import ChatCard from "../chatcard/ChatCard";
+import MessageCard from "../messagecard/MessageCard";
+import Profile from "../profile/Profile";
+import logo from "./defaultlogo.png";
+import wallpaper from "./wallpaper.jpg";
+import "./HomePage.css";
 
 const HomePage = () => {
   const [querys, setQuerys] = useState(null);
   const [currentChat, setCurrentChat] = useState(false);
   const [content, setContent] = useState("");
+  const [isProfile, setIsProfile] = useState(false);
   const handleClickOnChatCard = () => {
     setCurrentChat(true);
   };
   const handleSearch = () => {};
   const handleCreateNewMessage = () => {};
+  const handleNavigate = () =>{
+      setIsProfile(true);
+  };
   return (
-    <div className="relative">
+    <div className="relative bg-slate-500">
       <div className="w-full py-14 bg-[#00a884] ">
         <div className="flex bg-[#f0f2f5] h-[90vh] w-[95vw] absolute top-[5vh] left-[2vw]">
           <div className="left w-[30%] bg-[#e8e9ec] h-full ">
-            <div className="w-full">
-              <div className="flex justify-between items-center p-3">
-                <div className="flex items-center space-x-3">
+
+            {/* profile */}
+            {isProfile && <div className="w-full h-full"><Profile/></div>}
+
+
+            {!isProfile && <div className="w-full">
+
+            {/* home */}
+              { <div className="flex justify-between items-center p-3">
+                <div onClick={handleNavigate}className="flex items-center space-x-3">
                   <img
                     className="rounded-full w-10 h-10 cursor-pointer"
                     src="https://images.pexels.com/photos/14662833/pexels-photo-14662833.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
@@ -42,7 +55,8 @@ const HomePage = () => {
                   <TbCircleDashed />
                   <BiCommentDetail />
                 </div>
-              </div>
+              </div>}
+
               <div className="relative flex justify-center items-center bg-white py-4 px-3">
                 <input
                   className="border-none outline-none bg-slate-200 rounded-md w-[93%] pl-9 py-2"
@@ -60,7 +74,7 @@ const HomePage = () => {
                 </div>
               </div>
               {/* all user */}
-              <div className="bg-white overflow-y-scroll h-[70vh] px-3">
+              <div className="bg-white overflow-y-scroll h-[72vh] px-3">
                 {querys &&
                   [1, 1, 1, 1, 1].map((item) => (
                     <div onClick={handleClickOnChatCard}>
@@ -70,20 +84,20 @@ const HomePage = () => {
                     </div>
                   ))}
               </div>
-            </div>
+            </div>}
           </div>
 
           {/* default whatsapp page */}
           {!currentChat && (
             <div className="w-[70%] flex flex-col items-center justify-center h-full">
-              <div className="max-w-[70%] text-center">
+              <div className="max-w-[70%] text-center flex items-center flex-col">
                 <img
-                  className
+                  className="w-[70%]"
                   src={logo}
                   alt=""
                 />
-                <h1 className="text-4xl text-gray-600">Whatsapp Web</h1>
-                <div className="my-9">
+                <h1 className="text-4xl text-gray-600 font-light">Whatsapp Web</h1>
+                <div className="my-9 font-light">
                   Send and receive messages without keeping your phone online.
                   <br />
                   Use WhatsApp on up to 4 linked devices and 1 phone at the same
@@ -134,7 +148,7 @@ const HomePage = () => {
                     placeholder="Type a message"
                     value={content}
                     onKeyPress={(e) => {
-                      if (e.key == "Enter") {
+                      if (e.key === "Enter") {
                         handleCreateNewMessage();
                         setContent("");
                       }
