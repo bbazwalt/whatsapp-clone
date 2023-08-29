@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BsArrowLeft, BsPencilFill } from "react-icons/bs";
 
 const Profile = () => {
+  const [flag,setFlag] = useState(false);
   const navigate = useNavigate();
-
   const handleNavigate = () => {
     navigate(-1);
   };
@@ -35,10 +35,12 @@ const Profile = () => {
       {/* name section */}
       <div className="bg-white px-3">
         <p className="py-3">Your name</p>
-        <div className="w-full flex justify-between items-center">
+
+        { !flag && <div className="w-full flex justify-between items-center">
           <p className="py-3">username</p>
           <BsPencilFill className="cursor-pointer" />
-        </div>
+        </div>}
+
       </div>
       <div className="px-3 my-5">
       <p className="py-10" >
