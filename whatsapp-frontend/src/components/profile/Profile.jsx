@@ -1,20 +1,28 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { BsArrowLeft, BsPencilFill } from "react-icons/bs";
+import { BsArrowLeft, BsCheck2, BsPencilFill } from "react-icons/bs";
 
-const Profile = () => {
+const Profile = ({handleCloseOpenProfile}) => {
   const [flag,setFlag] = useState(false);
-  const navigate = useNavigate();
-  const handleNavigate = () => {
-    navigate(-1);
-  };
+  const[username,setUsername] = useState(null)
+
+  const handleFlag = () =>{
+    setFlag(true);
+  }
+
+  const handleCheckClick = () =>{
+    setFlag(false);
+  }
+
+  const handleChange = (e) =>{
+    setUsername(e.target.value);
+  }
 
   return (
     <div className="w-full h-full">
       <div className="flex items-center space-x-10 bg-[#008069] text-white pt-16 px-10 pb-5">
         <BsArrowLeft
           className="cursor-pointer text-2xl font-bold"
-          onClick={handleNavigate}
+          onClick={handleCloseOpenProfile}
         />
         <p className="cursor-pointer font-semibold">Profile</p>
       </div>
@@ -37,9 +45,17 @@ const Profile = () => {
         <p className="py-3">Your name</p>
 
         { !flag && <div className="w-full flex justify-between items-center">
-          <p className="py-3">username</p>
-          <BsPencilFill className="cursor-pointer" />
+          <p className="py-3">{username || "username"}</p>
+          <BsPencilFill onClick={handleFlag} className="cursor-pointer" />
         </div>}
+
+        {
+          flag && <div className="w-full flex justify-between items-center py-2">
+            <input onChange={handleChange}className="w-[80%] outline-none border-b-2 border-blue-700 p-2" type="text" placeholder="Enter your name"/>
+            <BsCheck2 onClick={handleCheckClick}className="cursor-pointer text-2xl"/>
+          </div>
+        }
+
 
       </div>
       <div className="px-3 my-5">

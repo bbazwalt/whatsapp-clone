@@ -29,6 +29,9 @@ const HomePage = () => {
   const handleNavigate = () =>{
       setIsProfile(true);
   };
+  const handleCloseOpenProfile = ()=>{
+    setIsProfile(false);
+  }
   return (
     <div className="relative bg-slate-500">
       <div className="w-full py-14 bg-[#00a884] ">
@@ -36,7 +39,7 @@ const HomePage = () => {
           <div className="left w-[30%] bg-[#e8e9ec] h-full ">
 
             {/* profile */}
-            {isProfile && <div className="w-full h-full"><Profile/></div>}
+            {isProfile && <div className="w-full h-full"><Profile handleCloseOpenProfile={handleCloseOpenProfile}/></div>}
 
 
             {!isProfile && <div className="w-full">
