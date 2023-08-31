@@ -15,8 +15,10 @@ import Profile from "../profile/Profile";
 import logo from "./defaultlogo.png";
 import wallpaper from "./wallpaper.jpg";
 import "./HomePage.css";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
+  const navigate = useNavigate();
   const [querys, setQuerys] = useState(null);
   const [currentChat, setCurrentChat] = useState(false);
   const [content, setContent] = useState("");
@@ -55,7 +57,7 @@ const HomePage = () => {
                   <p>username</p>
                 </div>
                 <div className="space-x-3 text-2xl flex">
-                  <TbCircleDashed />
+                  <TbCircleDashed className="cursor-pointer" onClick={()=>navigate("/status")}/>
                   <BiCommentDetail />
                 </div>
               </div>}
