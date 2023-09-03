@@ -25,7 +25,7 @@ public class AppConfig {
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(
-						authorize -> authorize.requestMatchers("/api/**").authenticated().anyRequest().permitAll())
+						authorize -> authorize.requestMatchers("/api/v1/**").authenticated().anyRequest().permitAll())
 				.addFilterBefore(new JwtTokenValidator(), BasicAuthenticationFilter.class).csrf(csrf -> {
 					try {
 						csrf.disable().cors(cors -> cors.configurationSource(new CorsConfigurationSource() {

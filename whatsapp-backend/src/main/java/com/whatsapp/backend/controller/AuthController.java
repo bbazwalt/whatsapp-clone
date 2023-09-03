@@ -8,6 +8,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,7 @@ import com.whatsapp.backend.response.AuthResponse;
 import com.whatsapp.backend.service.CustomUserService;
 
 @RestController
+@CrossOrigin(origins="http://localhost:3000")
 @RequestMapping("/auth")
 public class AuthController {
 
@@ -30,12 +32,14 @@ public class AuthController {
 	private TokenProvider tokenProvider;
 	private CustomUserService customUserService;
 
-	public AuthController(UserRepository userRepository, PasswordEncoder passwordEncoder,
+	public AuthController(UserRepository userRepository, PasswordEncoder passwordEncoder,TokenProvider tokenProvider,
 			CustomUserService customUserService) {
 		super();
 		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
+		this.tokenProvider=tokenProvider;
 		this.customUserService = customUserService;
+		
 	}
 
 	@PostMapping("/signup")
@@ -59,6 +63,7 @@ public class AuthController {
 		return new ResponseEntity<AuthResponse>(res, HttpStatus.ACCEPTED);
 	}
 
+	@PostMapping("/login")
 	public ResponseEntity<AuthResponse> loginHandler(@RequestBody LoginRequest req) {
 		String email = req.getEmail();
 		String password = req.getPassword();

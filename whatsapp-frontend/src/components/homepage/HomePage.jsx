@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { TbCircleDashed } from "react-icons/tb";
@@ -19,6 +19,8 @@ import wallpaper from "./wallpaper.jpg";
 import "./HomePage.css";
 import { useNavigate } from "react-router-dom";
 import CreateGroup from "../group/CreateGroup";
+import { useDispatch, useSelector } from "react-redux";
+import { currentUser, logout } from "../../redux/auth/action";
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -28,8 +30,10 @@ const HomePage = () => {
   const [isProfile, setIsProfile] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-  const [isGroup,setIsGroup] = useState(false)
-
+  const [isGroup, setIsGroup] = useState(false);
+  const dispatch = useDispatch();
+  const { auth } = useSelector((store) => store);
+  const token = localStorage.getItem("token");
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -50,24 +54,39 @@ const HomePage = () => {
     setIsProfile(false);
   };
   const handleCreateGroup = () => {
-    setIsGroup(true)
+    setIsGroup(true);
   };
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/signin");
+  };
+
+  useEffect(() => {
+    dispatch(currentUser(token));
+  }, [token]);
+
+  useEffect(() => {
+    if (!auth.reqUser) {
+      navigate("/signin");
+    }
+  }, [auth.reqUser]);
+
   return (
     <div className="relative bg-slate-500">
       <div className="w-full py-14 bg-[#00a884] ">
         <div className="flex bg-[#f0f2f5] h-[90vh] w-[95vw] absolute top-[5vh] left-[2vw]">
           <div className="left w-[30%] bg-[#e8e9ec] h-full ">
             {/* profile */}
-            {isGroup && <CreateGroup/>}
+            {isGroup && <CreateGroup />}
             {isProfile && (
               <div className="w-full h-full">
                 <Profile handleCloseOpenProfile={handleCloseOpenProfile} />
               </div>
             )}
 
-            {!isProfile && !isGroup &&
+            {!isProfile && !isGroup && (
               <div className="w-full">
-
                 {/* home */}
                 {
                   <div className="flex justify-between items-center p-3">
@@ -80,7 +99,7 @@ const HomePage = () => {
                         src="https://images.pexels.com/photos/14662833/pexels-photo-14662833.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
                         alt=""
                       />
-                      <p>username</p>
+                      <p>{auth.reqUser?.full_name}</p>
                     </div>
                     <div className="space-x-3 text-2xl flex">
                       <TbCircleDashed
@@ -110,7 +129,7 @@ const HomePage = () => {
                           <MenuItem onClick={handleCreateGroup}>
                             Create group
                           </MenuItem>
-                          <MenuItem onClick={handleClose}>Logout</MenuItem>
+                          <MenuItem onClick={handleLogout}>Logout</MenuItem>
                         </Menu>
                       </div>
                     </div>
@@ -145,7 +164,7 @@ const HomePage = () => {
                     ))}
                 </div>
               </div>
-            }
+            )}
           </div>
 
           {/* default whatsapp page */}

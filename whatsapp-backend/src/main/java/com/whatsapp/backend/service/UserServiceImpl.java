@@ -17,30 +17,10 @@ public class UserServiceImpl implements UserService {
 
 	private UserRepository userRepository;
 	private TokenProvider tokenProvider;
-	
-	public UserServiceImpl() {
-		super();
-	}
 
 	public UserServiceImpl(UserRepository userRepository, TokenProvider tokenProvider) {
 		super();
 		this.userRepository = userRepository;
-		this.tokenProvider = tokenProvider;
-	}
-	
-	public UserRepository getUserRepository() {
-		return userRepository;
-	}
-
-	public void setUserRepository(UserRepository userRepository) {
-		this.userRepository = userRepository;
-	}
-
-	public TokenProvider getTokenProvider() {
-		return tokenProvider;
-	}
-
-	public void setTokenProvider(TokenProvider tokenProvider) {
 		this.tokenProvider = tokenProvider;
 	}
 
@@ -51,7 +31,6 @@ public class UserServiceImpl implements UserService {
 			return opt.get();
 		}
 		throw new UserException("User not found with the id" + id);
-
 	}
 
 	@Override

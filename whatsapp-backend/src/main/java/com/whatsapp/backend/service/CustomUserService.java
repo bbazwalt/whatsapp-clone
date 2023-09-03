@@ -16,19 +16,9 @@ import com.whatsapp.backend.repository.UserRepository;
 public class CustomUserService implements UserDetailsService {
 
 	private UserRepository userRepository;
-	
-	public CustomUserService() {
-	}
-
-	public UserRepository getUserRepository() {
-		return userRepository;
-	}
-
-	public void setUserRepository(UserRepository userRepository) {
-		this.userRepository = userRepository;
-	}
 
 	public CustomUserService(UserRepository userRepository) {
+		super();
 		this.userRepository = userRepository;
 	}
 

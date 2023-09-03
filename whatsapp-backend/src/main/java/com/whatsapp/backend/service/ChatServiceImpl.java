@@ -3,6 +3,8 @@ package com.whatsapp.backend.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.stereotype.Service;
+
 import com.whatsapp.backend.exception.ChatException;
 import com.whatsapp.backend.exception.UserException;
 import com.whatsapp.backend.model.Chat;
@@ -10,6 +12,7 @@ import com.whatsapp.backend.model.User;
 import com.whatsapp.backend.repository.ChatRepository;
 import com.whatsapp.backend.request.GroupChatRequest;
 
+@Service
 public class ChatServiceImpl implements ChatService{
 
 	private ChatRepository chatRepository;
