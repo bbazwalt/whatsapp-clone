@@ -39,8 +39,8 @@ public class UserController {
 		return new ResponseEntity<User>(user, HttpStatus.ACCEPTED);
 	}
 
-	@GetMapping("/{query}")
-	public ResponseEntity<List<User>> searchUserHandler(@PathVariable("query") String q) {
+	@GetMapping("/{name}")
+	public ResponseEntity<List<User>> searchUserHandler(@PathVariable("name") String q) {
 		List<User> users = userService.searchUser(q);
 		return new ResponseEntity<List<User>>(users, HttpStatus.OK);
 	}

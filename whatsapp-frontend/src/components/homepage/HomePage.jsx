@@ -20,7 +20,7 @@ import "./HomePage.css";
 import { useNavigate } from "react-router-dom";
 import CreateGroup from "../group/CreateGroup";
 import { useDispatch, useSelector } from "react-redux";
-import { currentUser, logout } from "../../redux/auth/action";
+import { currentUser, logout, searchUser } from "../../redux/auth/action";
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -32,20 +32,22 @@ const HomePage = () => {
   const open = Boolean(anchorEl);
   const [isGroup, setIsGroup] = useState(false);
   const dispatch = useDispatch();
-  const { auth } = useSelector((store) => store);
+  const { auth } = useSelector(store => store);
   const token = localStorage.getItem("token");
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
-    setAnchorEl(null);
+    setAnchorEl(null); 
   };
 
   const handleClickOnChatCard = () => {
     setCurrentChat(true);
   };
-  const handleSearch = () => {};
+  const handleSearch = (keyword) => {
+    dispatch(searchUser(keyword,token))
+  };
   const handleCreateNewMessage = () => {};
   const handleNavigate = () => {
     setIsProfile(true);
@@ -155,7 +157,7 @@ const HomePage = () => {
                 {/* all user */}
                 <div className="bg-white overflow-y-scroll h-[72vh] px-3">
                   {querys &&
-                    [1, 1, 1, 1, 1].map((item) => (
+                    auth.searchUser?.map((item) => (
                       <div onClick={handleClickOnChatCard}>
                         {" "}
                         <hr />

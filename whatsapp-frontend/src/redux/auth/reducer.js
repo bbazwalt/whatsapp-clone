@@ -3,6 +3,9 @@ import { LOGIN, REGISTER, REQ_USER, SEARCH_USER, UPDATE_USER } from "./actionTyp
 const initialValue = {
   signup: null,
   signin: null,
+  reqUser: null,
+  searchUser:[]
+
 };
 
 export const authReducer = (store = initialValue, { type, payload }) => {
