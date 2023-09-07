@@ -1,18 +1,18 @@
 import React from "react";
 
-const ChatCard = () => {
+const ChatCard = ({item}) => {
   return (
     <div className="flex items-center justify-center py-2 group cursor-pointer">
       <div className="w-[20%]">
         <img
           className="h-14 w-14 rounded-full"
-          src="https://images.pexels.com/photos/17509463/pexels-photo-17509463/free-photo-of-man-woman-summer-hiking.jpeg"
+          src={item.profile_picture || "https://images.pexels.com/photos/17509463/pexels-photo-17509463/free-photo-of-man-woman-summer-hiking.jpeg"}
           alt=""
         />
       </div>
       <div className="pl-5 w-[80%]">
         <div className="flex justify-between items-center">
-          <p className="text-lg">username</p>
+          <p className="text-lg">{item.full_name}</p>
           <p className="text-sm">timestamp</p>
         </div>
         <div className="flex justify-between items-center">
