@@ -43,8 +43,9 @@ const HomePage = () => {
     setAnchorEl(null);
   };
 
-  const handleClickOnChatCard = () => {
-    setCurrentChat(true);
+  const handleClickOnChatCard = (item,userId) => {
+    setCurrentChat(item);
+    dispatch(createChat({token,data:{userId}}));
   };
   const handleSearch = (keyword) => {
     dispatch(searchUser(keyword, token));
@@ -54,7 +55,6 @@ const HomePage = () => {
     setIsProfile(true);
   };
   const handleCreateChat = (userId) => {
-    dispatch(createChat({userId}));
   };
   const handleCloseOpenProfile = () => {
     setIsProfile(false);
