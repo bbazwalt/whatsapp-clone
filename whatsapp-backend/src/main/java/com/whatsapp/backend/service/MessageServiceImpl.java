@@ -21,10 +21,6 @@ public class MessageServiceImpl implements MessageService {
 	private MessageRepository messageRepository;
 	private UserService userService;
 	private ChatService chatService;
-	
-	public MessageServiceImpl() {
-		super();
-	}
 
 	public MessageServiceImpl(MessageRepository messageRepository, UserService userService, ChatService chatService) {
 		super();
@@ -73,27 +69,4 @@ public class MessageServiceImpl implements MessageService {
 		throw new UserException("You can't delete another user's message"+reqUser.getFull_name());
 	}
 
-	public MessageRepository getMessageRepository() {
-		return messageRepository;
-	}
-
-	public void setMessageRepository(MessageRepository messageRepository) {
-		this.messageRepository = messageRepository;
-	}
-
-	public UserService getUserService() {
-		return userService;
-	}
-
-	public void setUserService(UserService userService) {
-		this.userService = userService;
-	}
-
-	public ChatService getChatService() {
-		return chatService;
-	}
-
-	public void setChatService(ChatService chatService) {
-		this.chatService = chatService;
-	}
 }

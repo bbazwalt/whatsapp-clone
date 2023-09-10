@@ -70,7 +70,7 @@ export const searchUser = (data) => async (dispatch) => {
   console.log("search data",data);
   try {
     const res = await fetch(
-      `${BASE_API_URL}/api/v1/users?name=${data.keyword}`,
+      `${BASE_API_URL}/api/v1/users/search?name=${data.keyword}`,
       {
         method: "GET",
         headers: {

@@ -4,8 +4,8 @@ const initialValue = {
   signup: null,
   signin: null,
   reqUser: null,
-  searchUser:[]
-
+  searchUser: [],
+  updateUser:null,
 };
 
 export const authReducer = (store = initialValue, { type, payload }) => {

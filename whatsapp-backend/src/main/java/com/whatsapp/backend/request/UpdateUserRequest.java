@@ -6,6 +6,7 @@ public class UpdateUserRequest {
 	private String profile_picture;
 
 	public UpdateUserRequest() {
+		super();
 	}
 
 	public UpdateUserRequest(String full_name, String profile_picture) {

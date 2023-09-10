@@ -37,13 +37,13 @@ export const createGroupChat = (chatData) => async (dispatch) => {
   }
 };
 
-export const getUsersChat = (chatData) => async (dispatch) => {
+export const getUsersChat = (token) => async (dispatch) => {
   try {
     const res = await fetch(`${BASE_API_URL}/api/v1/chats/user`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${chatData.token}`,
+        Authorization: `Bearer ${token}`,
       },
     });
     const data = await res.json();

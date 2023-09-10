@@ -19,24 +19,9 @@ public class ChatServiceImpl implements ChatService{
 	private UserService userService;
 	
 	public ChatServiceImpl(ChatRepository chatRepository, UserService userService) {
+		super();
 		this.userService=userService;
 		this.chatRepository = chatRepository;
-	}
-
-	public ChatRepository getChatRepository() {
-		return chatRepository;
-	}
-
-	public void setChatRepository(ChatRepository chatRepository) {
-		this.chatRepository = chatRepository;
-	}
-
-	public UserService getUserService() {
-		return userService;
-	}
-
-	public void setUserService(UserService userService) {
-		this.userService = userService;
 	}
 
 	@Override
@@ -47,11 +32,11 @@ public class ChatServiceImpl implements ChatService{
         	return isChatExists;
         }
         Chat chat = new Chat();
-        chat.setCreatedBy(reqUser);
+        chat.setCreated_by(reqUser);
         chat.getUsers().add(user);
         chat.getUsers().add(reqUser);
-        chat.setGroup(false);
-		return chat;
+        chat.setIs_group(false);
+        return chatRepository.save(chat);
 	}
 
 	@Override
@@ -73,16 +58,16 @@ public class ChatServiceImpl implements ChatService{
 	@Override
 	public Chat createGroup(GroupChatRequest req, User reqUser) throws UserException {
 		Chat group = new Chat();
-		group.setGroup(false);
+		group.setIs_group(true);
 		group.setChat_image(req.getChat_image());
 		group.setChat_name(req.getChat_name());
-		group.setCreatedBy(reqUser);
+		group.setCreated_by(reqUser);
 		group.getAdmins().add(reqUser);
 		for(Long userId : req.getUserIds()) {
 			User user = userService.findUserById(userId);
 			group.getUsers().add(user);
 		}
-		return group;
+		return chatRepository.save(group);
 	}
 
 	@Override
@@ -141,7 +126,6 @@ public class ChatServiceImpl implements ChatService{
 	@Override
 	public void deleteChat(Long chatId, Long userId) throws UserException, ChatException {
 		Optional<Chat> opt = chatRepository.findById(chatId);
-		
 		if(opt.isPresent()) {
 			Chat chat = opt.get();
 			chatRepository.deleteById(chat.getId());

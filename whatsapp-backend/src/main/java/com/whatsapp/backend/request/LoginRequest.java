@@ -6,6 +6,7 @@ public class LoginRequest {
 	private String password;
 	
 	public LoginRequest() {
+		super();
 	}
 
 	public LoginRequest(String email, String password) {

@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,13 +23,11 @@ public class Chat {
 
 	private String chat_name;
 	private String chat_image;
+	private boolean is_group;
 
-	@Column(name = "is_group")
-	private boolean isGroup;
-
-	@JoinColumn(name = "created_by")
 	@ManyToOne
-	private User createdBy;
+	@JoinColumn
+	private User created_by;
 
 	@ManyToMany
 	private Set<User> users = new HashSet<>();
@@ -42,16 +39,17 @@ public class Chat {
 	private List<Message> messages = new ArrayList<>();
 
 	public Chat() {
+		super();
 	}
 
-	public Chat(Long id, String chat_name, String chat_image, boolean isGroup, User createdBy, Set<User> users,
+	public Chat(Long id, String chat_name, String chat_image, boolean is_group, User created_by, Set<User> users,
 			Set<User> admins, List<Message> messages) {
 		super();
 		this.id = id;
 		this.chat_name = chat_name;
 		this.chat_image = chat_image;
-		this.isGroup = isGroup;
-		this.createdBy = createdBy;
+		this.is_group = is_group;
+		this.created_by = created_by;
 		this.users = users;
 		this.admins = admins;
 		this.messages = messages;
@@ -81,20 +79,20 @@ public class Chat {
 		this.chat_image = chat_image;
 	}
 
-	public boolean isGroup() {
-		return isGroup;
+	public boolean isIs_group() {
+		return is_group;
 	}
 
-	public void setGroup(boolean isGroup) {
-		this.isGroup = isGroup;
-	}
-	
-	public User getCreatedBy() {
-		return createdBy;
+	public void setIs_group(boolean is_group) {
+		this.is_group = is_group;
 	}
 
-	public void setCreatedBy(User createdBy) {
-		this.createdBy = createdBy;
+	public User getCreated_by() {
+		return created_by;
+	}
+
+	public void setCreated_by(User created_by) {
+		this.created_by = created_by;
 	}
 
 	public Set<User> getUsers() {

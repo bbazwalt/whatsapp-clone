@@ -5,6 +5,7 @@ public class SingleChatRequest {
 	private Long userId;
 	
 	public SingleChatRequest() {
+		super();
 	}
 	
 	public SingleChatRequest(Long userId) {

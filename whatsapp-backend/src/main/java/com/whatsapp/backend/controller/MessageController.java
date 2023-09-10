@@ -32,10 +32,6 @@ public class MessageController {
 	private MessageService messageService;
 	private UserService userService;
 	
-	public MessageController() {
-		super();
-	}
-
 	public MessageController(MessageService messageService, UserService userService) {
 		super();
 		this.messageService = messageService;

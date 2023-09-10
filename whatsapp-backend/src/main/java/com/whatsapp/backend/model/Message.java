@@ -27,6 +27,7 @@ public class Message {
 	private Chat chat;
 
 	public Message() {
+		super();
 	}
 
 	public Message(Long id, String content, LocalDateTime timestamp, User user, Chat chat) {

@@ -33,9 +33,6 @@ public class ChatController {
 	private ChatService chatService;
 	private UserService userService;
 
-	public ChatController() {
-	}
-
 	public ChatController(ChatService chatService, UserService userService) {
 		super();
 		this.chatService = chatService;

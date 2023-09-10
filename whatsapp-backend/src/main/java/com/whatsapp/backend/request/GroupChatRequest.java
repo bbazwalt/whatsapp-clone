@@ -9,6 +9,7 @@ public class GroupChatRequest {
 	private String chat_image;
 
 	public GroupChatRequest() {
+		super();
 	}
 
 	public GroupChatRequest(List<Long> userIds, String chat_name, String chat_image) {

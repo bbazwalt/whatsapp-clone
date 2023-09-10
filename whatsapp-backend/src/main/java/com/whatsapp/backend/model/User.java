@@ -20,6 +20,7 @@ public class User {
 	private String password;
 
 	public User() {
+		super();
 	}
 
 	public User(Long id, String full_name, String email, String profile_picture, String password) {

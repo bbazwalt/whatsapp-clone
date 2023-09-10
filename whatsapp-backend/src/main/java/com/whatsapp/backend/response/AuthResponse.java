@@ -6,6 +6,7 @@ public class AuthResponse {
 	private boolean isAuth;
 
 	public AuthResponse() {
+		super();
 	}
 
 	public AuthResponse(String jwt, boolean isAuth) {

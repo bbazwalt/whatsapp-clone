@@ -9,6 +9,7 @@ public class ErrorDetail {
 	private LocalDateTime timeStamp;
 
 	public ErrorDetail() {
+		super();
 	}
 
 	public ErrorDetail(String error, String message, LocalDateTime timeStamp) {
