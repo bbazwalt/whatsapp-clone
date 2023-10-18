@@ -12,7 +12,7 @@ const Signup = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const [inputData, setInputData] = useState({
-    full_name: "",
+    fullName: "",
     email: "",
     password: "",
   });
@@ -38,7 +38,7 @@ const Signup = () => {
   }, [token]);
 
   useEffect(() => {
-    if (auth.reqUser?.full_name) {
+    if (auth.reqUser?.fullName) {
       navigate("/");
     }
   }, [auth.reqUser]);
@@ -53,9 +53,9 @@ const Signup = () => {
                 <input
                   placeholder="Enter your full name"
                   onChange={(e) => handleChange(e)}
-                  value={inputData.full_name}
+                  value={inputData.fullName}
                   type="text"
-                  name="full_name"
+                  name="fullName"
                   className="py-2 px-3 border-4 w-full rounded-md "
                 />
               </div>

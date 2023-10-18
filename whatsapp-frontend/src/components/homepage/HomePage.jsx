@@ -22,11 +22,12 @@ import CreateGroup from "../group/CreateGroup";
 import { useDispatch, useSelector } from "react-redux";
 import { currentUser, logout, searchUser } from "../../redux/auth/action";
 import { createChat, getUsersChat } from "../../redux/chat/action";
+import { createMessage, getAllMessages } from "../../redux/message/action";
 
 const HomePage = () => {
   const navigate = useNavigate();
-  const [querys, setQuerys] = useState(null);
-  const [currentChat, setCurrentChat] = useState(false);
+  const [querys, setQuerys] = useState("");
+  const [currentChat, setCurrentChat] = useState(null);
   const [content, setContent] = useState("");
   const [isProfile, setIsProfile] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -48,11 +49,19 @@ const HomePage = () => {
       /*setCurrentChat(item);*/
     }
     dispatch(createChat({ token, data: { userId } }));
+    setQuerys("");
   };
   const handleSearch = (keyword) => {
     dispatch(searchUser({ keyword, token }));
   };
-  const handleCreateNewMessage = () => {};
+  const handleCreateNewMessage = () => {
+    dispatch(
+      createMessage({
+        token,
+        data: { chatId: currentChat.id, content: content },
+      })
+    );
+  };
   const handleNavigate = () => {
     setIsProfile(true);
   };
@@ -74,6 +83,11 @@ const HomePage = () => {
     navigate("/signin");
   };
 
+  const handleCurrentChat = (item) => {
+    setCurrentChat(item);
+  };
+  console.log("current chat", currentChat);
+
   useEffect(() => {
     dispatch(currentUser(token));
   }, [token]);
@@ -83,6 +97,11 @@ const HomePage = () => {
       navigate("/signin");
     }
   }, [auth.reqUser]);
+
+  useEffect(()=>{
+    if(currentChat?.id)
+      dispatch(getAllMessages({chatId:currentChat.id,token})) 
+  },[currentChat,message.newMessage])
 
   return (
     <div className="relative bg-slate-500">
@@ -111,7 +130,7 @@ const HomePage = () => {
                         src="https://images.pexels.com/photos/14662833/pexels-photo-14662833.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
                         alt=""
                       />
-                      <p>{auth.reqUser?.full_name}</p>
+                      <p>{auth.reqUser?.fullName}</p>
                     </div>
                     <div className="space-x-3 text-2xl flex">
                       <TbCircleDashed
@@ -171,26 +190,26 @@ const HomePage = () => {
                       <div onClick={() => handleClickOnChatCard(item.id)}>
                         <hr />
                         <ChatCard
-                        name={item.full_name}
-                            userImg={
-                              item.profile_picture ||
-                              "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
-                            }
-                          />
+                          name={item.fullName}
+                          userImg={
+                            item.profilePicture ||
+                            "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
+                          }
+                        />
                       </div>
                     ))}
 
                   {chat.chats.length > 0 &&
                     !querys &&
                     chat.chats?.map((item) => (
-                      <div onClick={() => handleClickOnChatCard(item.id)}>
+                      <div onClick={() => handleCurrentChat(item)}>
                         <hr />
-                        {item.is_group ? (
+                        {item.isGroup ? (
                           <ChatCard
-                            name={item.chat_name}
+                            name={item.chatName}
                             userImg={
                               item.chat.image ||
-                              "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
+                              "https://media.istockphoto.com/id/1168127003/vector/default-avatar-vector-placeholder-set-man-woman-child-teen-boy-girl-user-image-head.jpg?s=612x612&w=0&k=20&c=UulvDL4kySaaqFAkqLJjL4ggwbUvYKXbz5u1g1JZmbo="
                             }
                           />
                         ) : (
@@ -198,14 +217,14 @@ const HomePage = () => {
                             isChat={true}
                             name={
                               auth.reqUser?.id !== item.users[0]?.id
-                                ? item.users[0].full_name
-                                : item.users[1].full_name
+                                ? item.users[0].fullNname
+                                : item.users[1].fullName
                             }
                             userImg={
                               auth.reqUser.id !== item.users[0].id
-                                ? item.users[0].profile_picture ||
+                                ? item.users[0].profilePicture ||
                                   "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
-                                : item.users[1].profile_picture ||
+                                : item.users[1].profilePicture ||
                                   "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
                             }
                             // notification={notifications.length}
@@ -256,10 +275,25 @@ const HomePage = () => {
                   <div className="py-3 space-x-4 flex items-center px-3">
                     <img
                       className="w-10 h-10 rounded-full"
-                      src="https://images.pexels.com/photos/16105554/pexels-photo-16105554/free-photo-of-smiling-man-against-big-dense-foliage.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                      src={
+                        currentChat.isGroup
+                          ? currentChat.chatImage ||
+                            "https://media.istockphoto.com/id/1168127003/vector/default-avatar-vector-placeholder-set-man-woman-child-teen-boy-girl-user-image-head.jpg?s=612x612&w=0&k=20&c=UulvDL4kySaaqFAkqLJjL4ggwbUvYKXbz5u1g1JZmbo="
+                          : auth.reqUser.id !== currentChat.users[0].id
+                          ? currentChat.users[0].profilePicture ||
+                            "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
+                          : currentChat.users[1].profilePicture ||
+                            "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
+                      }
                       alt=""
                     />
-                    <p>username</p>
+                    <p>
+                      {currentChat.isGroup
+                        ? currentChat.chatName
+                        : auth.reqUser?.id === currentChat.users[0].id
+                        ? currentChat.users[1].fullName
+                        : currentChat.user[0].fullName}
+                    </p>
                   </div>
                   <div className="py-3 flex space-x-4 items-center px-3">
                     <AiOutlineSearch />
@@ -270,10 +304,10 @@ const HomePage = () => {
               {/* {message section} */}
               <div className="px-10 h-[85vh] overflow-y-scroll">
                 <div className="space-y-1 flex flex-col justify-center border mt-20 py-2">
-                  {[1, 1, 1, 1, 1].map((item, i) => (
+                  {message.messages.length>0 && message.messages?.map((item, i) => (
                     <MessageCard
-                      isReqUserMessage={i % 2 === 0}
-                      content={"message"}
+                      isReqUserMessage={item.user.id!==auth.reqUser.id}
+                      content={item.content}
                     />
                   ))}
                 </div>

@@ -32,7 +32,7 @@ public class ChatServiceImpl implements ChatService{
         	return isChatExists;
         }
         Chat chat = new Chat();
-        chat.setCreated_by(reqUser);
+        chat.setCreatedBy(reqUser);
         chat.getUsers().add(user);
         chat.getUsers().add(reqUser);
         chat.setIs_group(false);
@@ -59,9 +59,9 @@ public class ChatServiceImpl implements ChatService{
 	public Chat createGroup(GroupChatRequest req, User reqUser) throws UserException {
 		Chat group = new Chat();
 		group.setIs_group(true);
-		group.setChat_image(req.getChat_image());
-		group.setChat_name(req.getChat_name());
-		group.setCreated_by(reqUser);
+		group.setChat_image(req.getChatImage());
+		group.setChatName(req.getChatName());
+		group.setCreatedBy(reqUser);
 		group.getAdmins().add(reqUser);
 		for(Long userId : req.getUserIds()) {
 			User user = userService.findUserById(userId);
@@ -91,7 +91,7 @@ public class ChatServiceImpl implements ChatService{
 		if (opt.isPresent()) {
 			Chat chat = opt.get();
 			if(chat.getUsers().contains(reqUser)) {
-				chat.setChat_name(groupName);
+				chat.setChatName(groupName);
 				return chatRepository.save(chat);
 			}
 			throw new UserException("Only group members can rename this group");			

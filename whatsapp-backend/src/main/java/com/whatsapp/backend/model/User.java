@@ -2,6 +2,7 @@ package com.whatsapp.backend.model;
 
 import java.util.Objects;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,21 +15,23 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	private String full_name;
+	@Column(name = "full_name")
+	private String fullName;
+	
 	private String email;
-	private String profile_picture;
+	private String profilePicture;
 	private String password;
 
 	public User() {
 		super();
 	}
 
-	public User(Long id, String full_name, String email, String profile_picture, String password) {
+	public User(Long id, String fullName, String email, String profilePicture, String password) {
 		super();
 		this.id = id;
-		this.full_name = full_name;
+		this.fullName = fullName;
 		this.email = email;
-		this.profile_picture = profile_picture;
+		this.profilePicture = profilePicture;
 		this.password = password;
 	}
 
@@ -40,12 +43,12 @@ public class User {
 		this.id = id;
 	}
 	
-	public String getFull_name() {
-		return full_name;
+	public String getFullName() {
+		return fullName;
 	}
 
-	public void setFull_name(String full_name) {
-		this.full_name = full_name;
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
 	}
 
 
@@ -57,12 +60,12 @@ public class User {
 		this.email = email;
 	}
 
-	public String getProfile_picture() {
-		return profile_picture;
+	public String getProfilePicture() {
+		return profilePicture;
 	}
 
-	public void setProfile_picture(String profile_picture) {
-		this.profile_picture = profile_picture;
+	public void setProfilePicture(String profilePicture) {
+		this.profilePicture = profilePicture;
 	}
 
 	public String getPassword() {
@@ -75,7 +78,7 @@ public class User {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(email, full_name, id, password, profile_picture);
+		return Objects.hash(email, fullName, id, password, profilePicture);
 	}
 
 	@Override
@@ -87,9 +90,9 @@ public class User {
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
-		return Objects.equals(email, other.email) && Objects.equals(full_name, other.full_name)
+		return Objects.equals(email, other.email) && Objects.equals(fullName, other.fullName)
 				&& Objects.equals(id, other.id) && Objects.equals(password, other.password)
-				&& Objects.equals(profile_picture, other.profile_picture);
+				&& Objects.equals(profilePicture, other.profilePicture);
 	}
 
 }

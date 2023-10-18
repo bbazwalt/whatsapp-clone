@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,13 +22,15 @@ public class Chat {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	private String chat_name;
-	private String chat_image;
-	private boolean is_group;
+	private String chatName;
+	private String chatImage;
+	
+	@Column(name = "is_group")
+	private boolean isGroup;
 
 	@ManyToOne
-	@JoinColumn
-	private User created_by;
+	@JoinColumn(name = "created_by")
+	private User createdBy;
 
 	@ManyToMany
 	private Set<User> users = new HashSet<>();
@@ -42,14 +45,14 @@ public class Chat {
 		super();
 	}
 
-	public Chat(Long id, String chat_name, String chat_image, boolean is_group, User created_by, Set<User> users,
+	public Chat(Long id, String chatName, String chatImage, boolean isGroup, User createdBy, Set<User> users,
 			Set<User> admins, List<Message> messages) {
 		super();
 		this.id = id;
-		this.chat_name = chat_name;
-		this.chat_image = chat_image;
-		this.is_group = is_group;
-		this.created_by = created_by;
+		this.chatName = chatName;
+		this.chatImage = chatImage;
+		this.isGroup = isGroup;
+		this.createdBy = createdBy;
 		this.users = users;
 		this.admins = admins;
 		this.messages = messages;
@@ -63,36 +66,36 @@ public class Chat {
 		this.id = id;
 	}
 
-	public String getChat_name() {
-		return chat_name;
+	public String getChatName() {
+		return chatName;
 	}
 
-	public void setChat_name(String chat_name) {
-		this.chat_name = chat_name;
+	public void setChatName(String chatName) {
+		this.chatName = chatName;
 	}
 
-	public String getChat_image() {
-		return chat_image;
+	public String getChatImage() {
+		return chatImage;
 	}
 
-	public void setChat_image(String chat_image) {
-		this.chat_image = chat_image;
+	public void setChat_image(String chatImage) {
+		this.chatImage = chatImage;
 	}
 
-	public boolean isIs_group() {
-		return is_group;
+	public boolean isIsGroup() {
+		return isGroup;
 	}
 
-	public void setIs_group(boolean is_group) {
-		this.is_group = is_group;
+	public void setIs_group(boolean isGroup) {
+		this.isGroup = isGroup;
 	}
 
-	public User getCreated_by() {
-		return created_by;
+	public User getCreatedBy() {
+		return createdBy;
 	}
 
-	public void setCreated_by(User created_by) {
-		this.created_by = created_by;
+	public void setCreatedBy(User createdBy) {
+		this.createdBy = createdBy;
 	}
 
 	public Set<User> getUsers() {

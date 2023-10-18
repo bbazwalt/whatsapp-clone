@@ -49,11 +49,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User updateUser(Long userId, UpdateUserRequest req) throws UserException {
 		User user = findUserById(userId);
-		if (req.getFull_name() != null) {
-			user.setFull_name(req.getFull_name());
+		if (req.getFullName() != null) {
+			user.setFullName(req.getFullName());
 		}
-		if (req.getProfile_picture() != null) {
-			user.setProfile_picture(req.getProfile_picture());
+		if (req.getProfilePicture() != null) {
+			user.setProfilePicture(req.getProfilePicture());
 		}
 		return userRepository.save(user);
 	}

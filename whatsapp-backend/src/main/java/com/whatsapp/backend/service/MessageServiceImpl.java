@@ -38,7 +38,7 @@ public class MessageServiceImpl implements MessageService {
 		message.setUser(user);
 		message.setContent(req.getContent());
 		message.setTimestamp(LocalDateTime.now());
-		return message;
+		return messageRepository.save(message);
 	}
 
 	@Override
@@ -66,7 +66,7 @@ public class MessageServiceImpl implements MessageService {
 		if(message.getUser().getId().equals(reqUser.getId())) {
 			messageRepository.deleteById(messageId);
 		}
-		throw new UserException("You can't delete another user's message"+reqUser.getFull_name());
+		throw new UserException("You can't delete another user's message"+reqUser.getFullName());
 	}
 
 }
