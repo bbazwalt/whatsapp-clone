@@ -98,10 +98,10 @@ const HomePage = () => {
     }
   }, [auth.reqUser]);
 
-  useEffect(()=>{
-    if(currentChat?.id)
-      dispatch(getAllMessages({chatId:currentChat.id,token})) 
-  },[currentChat,message.newMessage])
+  useEffect(() => {
+    if (currentChat?.id)
+      dispatch(getAllMessages({ chatId: currentChat.id, token }));
+  }, [currentChat, message.newMessage]);
 
   return (
     <div className="relative bg-slate-500">
@@ -127,7 +127,10 @@ const HomePage = () => {
                     >
                       <img
                         className="rounded-full w-10 h-10 cursor-pointer"
-                        src="https://images.pexels.com/photos/14662833/pexels-photo-14662833.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                        src={
+                          auth.reqUser?.profilePicture ||
+                          "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
+                        }
                         alt=""
                       />
                       <p>{auth.reqUser?.fullName}</p>
@@ -304,12 +307,13 @@ const HomePage = () => {
               {/* {message section} */}
               <div className="px-10 h-[85vh] overflow-y-scroll">
                 <div className="space-y-1 flex flex-col justify-center border mt-20 py-2">
-                  {message.messages.length>0 && message.messages?.map((item, i) => (
-                    <MessageCard
-                      isReqUserMessage={item.user.id!==auth.reqUser.id}
-                      content={item.content}
-                    />
-                  ))}
+                  {message.messages.length > 0 &&
+                    message.messages?.map((item, i) => (
+                      <MessageCard
+                        isReqUserMessage={item.user.id !== auth.reqUser.id}
+                        content={item.content}
+                      />
+                    ))}
                 </div>
               </div>
               {/* footer part */}

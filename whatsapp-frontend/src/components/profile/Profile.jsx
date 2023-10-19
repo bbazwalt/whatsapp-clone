@@ -1,21 +1,56 @@
 import React, { useState } from "react";
 import { BsArrowLeft, BsCheck2, BsPencilFill } from "react-icons/bs";
+import { useDispatch, useSelector } from "react-redux";
+import { updateUser } from "../../redux/auth/action";
 
-const Profile = ({handleCloseOpenProfile}) => {
-  const [flag,setFlag] = useState(false);
-  const[username,setUsername] = useState(null)
+const Profile = ({ handleCloseOpenProfile }) => {
+  const [flag, setFlag] = useState(false);
+  const [username, setUsername] = useState(null);
+  const [tempPicture, setTempPicture] = useState(null);
+  const { auth } = useSelector((store) => store);
+  const dispatch = useDispatch();
 
-  const handleFlag = () =>{
+  const handleFlag = () => {
     setFlag(true);
-  }
+  };
 
-  const handleCheckClick = () =>{
+  const handleCheckClick = () => {
     setFlag(false);
-  }
+    const data = {
+      id: auth.reqUser?.id,
+      token: localStorage.getItem("token"),
+      data: { fullName: username },
+    };
+    dispatch(updateUser(data));
+  };
 
-  const handleChange = (e) =>{
+  const handleChange = (e) => {
     setUsername(e.target.value);
-  }
+  };
+
+  const uploadToCloudinary = (pics) => {
+    const data = new FormData();
+    data.append("file", pics);
+    data.append("upload_preset", "whatsapp");
+    data.append("cloud_name", "dx1plneez");
+    fetch("https://api.cloudinary.com/v1_1/dx1plneez/image/upload", {
+      method: "post",
+      body: data,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setTempPicture(data.url.toString());
+        // setMessage("profile image updated successfully");
+        // setOpen(true);
+        console.log("imgurl", data.url.toString());
+        const dataa = {
+          id: auth.reqUser.id,
+          token: localStorage.getItem("token"),
+          data: { profilePicture: data.url.toString() },
+        };
+        dispatch(updateUser(dataa));
+      });
+  };
 
   return (
     <div className="w-full h-full">
@@ -32,39 +67,55 @@ const Profile = ({handleCloseOpenProfile}) => {
         <label htmlFor="imgInput">
           <img
             className="rounded-full w-[15vw] h-[vw] cursor-pointer"
-            src="https://images.pexels.com/photos/7752846/pexels-photo-7752846.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+            src={
+              auth.reqUser?.profilePicture ||
+              tempPicture ||
+              "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
+            }
             alt=""
           />
         </label>
 
-        <input type="file" id="imgInput" className="hidden" />
+        <input
+          onChange={(e) => uploadToCloudinary(e.target.files[0])}
+          type="file"
+          id="imgInput"
+          className="hidden"
+        />
       </div>
 
       {/* name section */}
       <div className="bg-white px-3">
         <p className="py-3">Your name</p>
 
-        { !flag && <div className="w-full flex justify-between items-center">
-          <p className="py-3">{username || "username"}</p>
-          <BsPencilFill onClick={handleFlag} className="cursor-pointer" />
-        </div>}
-
-        {
-          flag && <div className="w-full flex justify-between items-center py-2">
-            <input onChange={handleChange}className="w-[80%] outline-none border-b-2 border-blue-700 p-2" type="text" placeholder="Enter your name"/>
-            <BsCheck2 onClick={handleCheckClick}className="cursor-pointer text-2xl"/>
+        {!flag && (
+          <div className="w-full flex justify-between items-center">
+            <p className="py-3">{username || "username"}</p>
+            <BsPencilFill onClick={handleFlag} className="cursor-pointer" />
           </div>
-        }
+        )}
 
-
+        {flag && (
+          <div className="w-full flex justify-between items-center py-2">
+            <input
+              onChange={handleChange}
+              className="w-[80%] outline-none border-b-2 border-blue-700 p-2"
+              type="text"
+              placeholder="Enter your name"
+            />
+            <BsCheck2
+              onClick={handleCheckClick}
+              className="cursor-pointer text-2xl"
+            />
+          </div>
+        )}
       </div>
       <div className="px-3 my-5">
-      <p className="py-10" >
-        This is not your username or pin. This name will be visible to your
-        WhatsApp contacts.
-      </p>
+        <p className="py-10">
+          This is not your username or pin. This name will be visible to your
+          WhatsApp contacts.
+        </p>
       </div>
-
     </div>
   );
 };
