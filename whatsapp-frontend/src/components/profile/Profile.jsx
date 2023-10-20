@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { BsArrowLeft, BsCheck2, BsPencilFill } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUser } from "../../redux/auth/action";
+import { Avatar } from "@mui/material";
 
 const Profile = ({ handleCloseOpenProfile }) => {
   const [flag, setFlag] = useState(false);
@@ -27,7 +28,7 @@ const Profile = ({ handleCloseOpenProfile }) => {
   const handleChange = (e) => {
     setUsername(e.target.value);
   };
-
+ 
   const uploadToCloudinary = (pics) => {
     const data = new FormData();
     data.append("file", pics);
@@ -65,7 +66,7 @@ const Profile = ({ handleCloseOpenProfile }) => {
       {/* update profile pic section */}
       <div className="flex flex-col justify-center items-center my-12">
         <label htmlFor="imgInput">
-          <img
+          {/* <img
             className="rounded-full w-[15vw] h-[vw] cursor-pointer"
             src={
               auth.reqUser?.profilePicture ||
@@ -73,7 +74,13 @@ const Profile = ({ handleCloseOpenProfile }) => {
               "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
             }
             alt=""
-          />
+          /> */}
+          <Avatar sx={{width:"15rem",height:"15rem"}}
+          alt="profile icon"   src={
+            auth.reqUser?.profilePicture ||
+            tempPicture ||
+            "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
+          }/>
         </label>
 
         <input
@@ -90,7 +97,7 @@ const Profile = ({ handleCloseOpenProfile }) => {
 
         {!flag && (
           <div className="w-full flex justify-between items-center">
-            <p className="py-3">{username || "username"}</p>
+            <p className="py-3">{auth.reqUser?.fullName || "username"}</p>
             <BsPencilFill onClick={handleFlag} className="cursor-pointer" />
           </div>
         )}
@@ -110,7 +117,7 @@ const Profile = ({ handleCloseOpenProfile }) => {
           </div>
         )}
       </div>
-      <div className="px-3 my-5">
+      <div className="px-3">
         <p className="py-10">
           This is not your username or pin. This name will be visible to your
           WhatsApp contacts.

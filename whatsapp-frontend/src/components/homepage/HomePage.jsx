@@ -23,19 +23,83 @@ import { useDispatch, useSelector } from "react-redux";
 import { currentUser, logout, searchUser } from "../../redux/auth/action";
 import { createChat, getUsersChat } from "../../redux/chat/action";
 import { createMessage, getAllMessages } from "../../redux/message/action";
-
+import SockJS from "sockjs-client/dist/sockjs";
+import { over } from "stompjs";
 const HomePage = () => {
   const navigate = useNavigate();
+  const [messages, setMessages] = useState([]);
   const [querys, setQuerys] = useState("");
   const [currentChat, setCurrentChat] = useState(null);
   const [content, setContent] = useState("");
   const [isProfile, setIsProfile] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+  const [isConnect, setIsConnect] = useState(false);
   const [isGroup, setIsGroup] = useState(false);
   const dispatch = useDispatch();
   const { auth, chat, message } = useSelector((store) => store);
   const token = localStorage.getItem("token");
+  const [stompClient, setStopClient] = useState();
+
+  const connect = () => {
+    const sock = new SockJS("http://localhost:8083/ws");
+    const temp = over(sock);
+    setStopClient(temp);
+
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      "X-XSRF-TOKEN": getCookie("XSRF-TOKEN"),
+    };
+
+    temp.connect(headers, onConnect, onError);
+  };
+
+  const getCookie = () => {
+    const value = `; ${document.cookie}`;
+    // eslint-disable-next-line no-restricted-globals
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) {
+      return parts.pop().split(";").shift();
+    }
+  };
+
+  const onError = (error) => {
+    console.log("no error ", error);
+  };
+
+  const onConnect = () => {
+    setIsConnect(true);
+  };
+
+  useEffect(() => {
+    if (message.newMessage && stompClient) {
+      setMessages([...messages, message.newMessage]);
+      stompClient?.send("/app/message", {}, JSON.stringify(message.newMessage));
+    }
+  },[ message.newMessage]);
+
+  const onMessageService = (payload) => {
+    console.log("receive message ", JSON.parse(payload.body));
+    const receivedMessage = JSON.parse(payload.body);
+    setMessages([...messages, receivedMessage]);
+  };
+
+  useEffect(() => {
+    if (isConnect && stompClient && auth.reqUser && currentChat) {
+      const subscription = stompClient.subscribe(
+        "/group/" + currentChat.id.toString(),
+        onMessageService
+      );
+
+      return () => {
+        subscription.unsubscribe();
+      };
+    }
+  });
+
+  useEffect(() => {
+    setMessages(message.messages);
+  }, [message.messages]);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -103,13 +167,17 @@ const HomePage = () => {
       dispatch(getAllMessages({ chatId: currentChat.id, token }));
   }, [currentChat, message.newMessage]);
 
+  useEffect(() => {
+    connect();
+  }, []);
+
   return (
     <div className="relative bg-slate-500">
       <div className="w-full py-14 bg-[#00a884] ">
         <div className="flex bg-[#f0f2f5] h-[90vh] w-[95vw] absolute top-[5vh] left-[2vw]">
           <div className="left w-[30%] bg-[#e8e9ec] h-full ">
             {/* profile */}
-            {isGroup && <CreateGroup />}
+            {isGroup && <CreateGroup setIsGroup={setIsGroup} />}
             {isProfile && (
               <div className="w-full h-full">
                 <Profile handleCloseOpenProfile={handleCloseOpenProfile} />
@@ -211,7 +279,7 @@ const HomePage = () => {
                           <ChatCard
                             name={item.chatName}
                             userImg={
-                              item.chat.image ||
+                              item.chatImage ||
                               "https://media.istockphoto.com/id/1168127003/vector/default-avatar-vector-placeholder-set-man-woman-child-teen-boy-girl-user-image-head.jpg?s=612x612&w=0&k=20&c=UulvDL4kySaaqFAkqLJjL4ggwbUvYKXbz5u1g1JZmbo="
                             }
                           />
@@ -307,8 +375,8 @@ const HomePage = () => {
               {/* {message section} */}
               <div className="px-10 h-[85vh] overflow-y-scroll">
                 <div className="space-y-1 flex flex-col justify-center border mt-20 py-2">
-                  {message.messages.length > 0 &&
-                    message.messages?.map((item, i) => (
+                  {messages.length > 0 &&
+                    messages?.map((item, i) => (
                       <MessageCard
                         isReqUserMessage={item.user.id !== auth.reqUser.id}
                         content={item.content}

@@ -3,18 +3,25 @@ import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
 import SelectedMember from "./SelectedMember";
 import ChatCard from "../chatcard/ChatCard";
 import NewGroup from "./NewGroup";
+import { useDispatch, useSelector } from "react-redux";
+import { searchUser } from "../../redux/auth/action";
 
-const CreateGroup = () => {
+const CreateGroup = ({setIsGroup}) => {
   const [newGroup, setNewGroup] = useState(false);
   const [groupMember, setGroupMember] = useState(new Set());
   const [query, setQuery] = useState("");
+  const { auth } = useSelector((store) => store);
+  const dispatch = useDispatch();
+  const token = localStorage.getItem("token");
 
   const handleRemoveMember = (item) => {
     groupMember.delete(item);
     setGroupMember(groupMember);
   };
 
-  const handleSearch = () => {};
+  const handleSearch = () => {
+    dispatch(searchUser({ keyword: query, token }));
+  };
 
   return (
     <div className="w-full h-full">
@@ -29,51 +36,56 @@ const CreateGroup = () => {
               {groupMember.size > 0 &&
                 Array.from(groupMember).map((item) => (
                   <SelectedMember
-                    handleRemoveMember={()=>handleRemoveMember(item)}
+                    handleRemoveMember={() => handleRemoveMember(item)}
                     member={item}
                   />
                 ))}
             </div>
 
-              <input
-                type="text"
-                onChange={(e) => {
-                  handleSearch(e.target.value);
-                  setQuery(e.target.value);
-                }}
-                className="outline-none border-b border-[#8888] p-2 w-[93%]"
-                placeholder="Type contact name"
-                value={query}
-              />
-            </div>
-            <div className="bg-white overflow-y-scroll h-[50.2vh]">
-              {query &&
-                [1, 1,1,1,1].map((item) => 
-                  <div
-                    onClick={() => {
-                      groupMember.add(item);
-                      setGroupMember(groupMember);
-                      setQuery("");
-                    }}
-                    key={item?.id}
-                  >
-                    <hr />
-                    <ChatCard />
-                  </div>
-                )}
-            </div>
+            <input
+              type="text"
+              onChange={(e) => {
+                handleSearch(e.target.value);
+                setQuery(e.target.value);
+              }}
+              className="outline-none border-b border-[#8888] p-2 w-[93%]"
+              placeholder="Type contact name"
+              value={query}
+            />
+          </div>
+          <div className="bg-white overflow-y-scroll h-[50.2vh]">
+            {query &&
+              auth.searchUser?.map((item) => (
+                <div
+                  onClick={() => {
+                    groupMember.add(item);
+                    setGroupMember(groupMember);
+                    setQuery("");
+                  }}
+                  key={item?.id}
+                >
+                  <hr />
+                  <ChatCard
+                    userImg={item.profilePicture}
+                    name={item.fullName}
+                  />
+                </div>
+              ))}
+          </div>
 
           <div className="bottom-10 py-10 bg-slate-200 flex items-center justify-center">
-            <div className="bg-green-600 rounded-full p-4 cursor-pointer" onClick={()=>{
-              setNewGroup(true)
-            }}>
-              <BsArrowRight className="text-white font-bold text-3xl"/>
-            </div>
-
+            <div
+              className="bg-green-600 rounded-full p-4 cursor-pointer"
+              onClick={() => {
+                setNewGroup(true);
+              }}
+            >
+              <BsArrowRight className="text-white font-bold text-3xl" />
             </div>
           </div>
+        </div>
       )}
-      {newGroup && <NewGroup/>}
+      {newGroup && <NewGroup setIsGroup={setIsGroup} groupMember={groupMember} />}
     </div>
   );
 };
