@@ -6,8 +6,6 @@ Whatsapp Clone Web App
 
 • Wrote REST APIs for CRUD Operations like add, view, update & delete for user, chat details & JWT for Authentication
 
-• Implemented profile name, profile picture, search, real time single chat & group chat using WebSockets
-
 • Used External API endpoints like Cloudinary API for image storage. WebSocket APIs like Spring Boot WebSocket for backend, StompJS & SockJS for frontend
 
 
