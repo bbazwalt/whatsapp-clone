@@ -4,7 +4,7 @@ Whatsapp Clone Web App
 
 • Tech Stack: Java, Spring Boot, JavaScript, React, Redux, Tailwind CSS, MUI, MySQL, Hibernate
 
-• Wrote REST APIs for CRUD Operations like add, view, update & delete for user, chat details & JWT for Authentication
+• Implemented features like realtime chat, group chat, profile picture, search, login & signup with JWT for Authentication
 
 • Used External API endpoints like Cloudinary API for image storage. WebSocket APIs like Spring Boot WebSocket for backend, StompJS & SockJS for frontend
 
