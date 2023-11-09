@@ -3,6 +3,6 @@ package com.whatsapp.backend.config;
 public class JwtConstant {
 
 	public static final String JWT_HEADER = "Authorization";
-	public static final String SECRET_KEY = "qioerpweyvczkvnrpyhotpasnygdtguwefbjv";
+	public static final String SECRET_KEY = "";
 
 }

@@ -17,7 +17,7 @@ public class TokenProvider {
 	SecretKey key = Keys.hmacShaKeyFor(JwtConstant.SECRET_KEY.getBytes());
 
 	public String generateToken(Authentication authentication) {
-		String jwt = Jwts.builder().setIssuer("Benilton Azwalt").setIssuedAt(new Date())
+		String jwt = Jwts.builder().setIssuer("Benilton Azwalt B").setIssuedAt(new Date())
 				.setExpiration(new Date(new Date().getTime() + 86400000)).claim("email", authentication.getName())
 				.signWith(key).compact();
 		return jwt;

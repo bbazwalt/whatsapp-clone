@@ -76,7 +76,7 @@ const HomePage = () => {
       setMessages([...messages, message.newMessage]);
       stompClient?.send("/app/message", {}, JSON.stringify(message.newMessage));
     }
-  },[ message.newMessage]);
+  }, [message.newMessage]);
 
   const onMessageService = (payload) => {
     console.log("receive message ", JSON.parse(payload.body));
@@ -109,9 +109,6 @@ const HomePage = () => {
   };
 
   const handleClickOnChatCard = (userId) => {
-    {
-      /*setCurrentChat(item);*/
-    }
     dispatch(createChat({ token, data: { userId } }));
     setQuerys("");
   };
@@ -176,7 +173,6 @@ const HomePage = () => {
       <div className="w-full py-14 bg-[#00a884] ">
         <div className="flex bg-[#f0f2f5] h-[90vh] w-[95vw] absolute top-[5vh] left-[2vw]">
           <div className="left w-[30%] bg-[#e8e9ec] h-full ">
-            {/* profile */}
             {isGroup && <CreateGroup setIsGroup={setIsGroup} />}
             {isProfile && (
               <div className="w-full h-full">
@@ -186,7 +182,6 @@ const HomePage = () => {
 
             {!isProfile && !isGroup && (
               <div className="w-full">
-                {/* home */}
                 {
                   <div className="flex justify-between items-center p-3">
                     <div
@@ -204,10 +199,7 @@ const HomePage = () => {
                       <p>{auth.reqUser?.fullName}</p>
                     </div>
                     <div className="space-x-3 text-2xl flex">
-                      <TbCircleDashed
-                        className="cursor-pointer"
-                        onClick={() => navigate("/status")}
-                      />
+                      <TbCircleDashed />
                       <BiCommentDetail />
                       <div>
                         <BsThreeDotsVertical
@@ -254,7 +246,6 @@ const HomePage = () => {
                     <BsFilter className="ml-4 text-3xl" />
                   </div>
                 </div>
-                {/* all user */}
                 <div className="bg-white overflow-y-scroll h-[72vh] px-3">
                   {querys &&
                     auth.searchUser?.map((item) => (
@@ -298,17 +289,6 @@ const HomePage = () => {
                                 : item.users[1].profilePicture ||
                                   "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
                             }
-                            // notification={notifications.length}
-                            // isNotifications={
-                            //   notifications[0]?.chat?.id === item.id
-                            // }
-                            // message={
-                            //   (item.id ===
-                            //     messages[messages.length - 1]?.chat?.id &&
-                            //     messages[messages.length - 1]?.content) ||
-                            //   (item.id === notifications[0]?.chat?.id &&
-                            //     notifications[0]?.content)
-                            // }
                           />
                         )}
                       </div>
@@ -318,7 +298,6 @@ const HomePage = () => {
             )}
           </div>
 
-          {/* default whatsapp page */}
           {!currentChat && (
             <div className="w-[70%] flex flex-col items-center justify-center h-full">
               <div className="max-w-[70%] text-center flex items-center flex-col">
@@ -335,7 +314,6 @@ const HomePage = () => {
               </div>
             </div>
           )}
-          {/* {message part} */}
           {currentChat && (
             <div
               className="w-[70%] relative"
@@ -372,7 +350,6 @@ const HomePage = () => {
                   </div>
                 </div>
               </div>
-              {/* {message section} */}
               <div className="px-10 h-[85vh] overflow-y-scroll">
                 <div className="space-y-1 flex flex-col justify-center border mt-20 py-2">
                   {messages.length > 0 &&
@@ -384,7 +361,6 @@ const HomePage = () => {
                     ))}
                 </div>
               </div>
-              {/* footer part */}
               <div className="footer bg-[#f0f2f5] absolute bottom-0 w-full py-3 text-2xl">
                 <div className="flex justify-between items-center px-5 relative">
                   <BsEmojiSmile className="cursor-pointer" />

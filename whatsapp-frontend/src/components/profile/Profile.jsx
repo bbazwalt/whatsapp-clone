@@ -28,7 +28,7 @@ const Profile = ({ handleCloseOpenProfile }) => {
   const handleChange = (e) => {
     setUsername(e.target.value);
   };
- 
+
   const uploadToCloudinary = (pics) => {
     const data = new FormData();
     data.append("file", pics);
@@ -41,8 +41,6 @@ const Profile = ({ handleCloseOpenProfile }) => {
       .then((res) => res.json())
       .then((data) => {
         setTempPicture(data.url.toString());
-        // setMessage("profile image updated successfully");
-        // setOpen(true);
         console.log("imgurl", data.url.toString());
         const dataa = {
           id: auth.reqUser.id,
@@ -63,24 +61,17 @@ const Profile = ({ handleCloseOpenProfile }) => {
         <p className="cursor-pointer font-semibold">Profile</p>
       </div>
 
-      {/* update profile pic section */}
       <div className="flex flex-col justify-center items-center my-12">
         <label htmlFor="imgInput">
-          {/* <img
-            className="rounded-full w-[15vw] h-[vw] cursor-pointer"
+          <Avatar
+            sx={{ width: "15rem", height: "15rem" }}
+            alt="profile icon"
             src={
               auth.reqUser?.profilePicture ||
               tempPicture ||
               "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
             }
-            alt=""
-          /> */}
-          <Avatar sx={{width:"15rem",height:"15rem"}}
-          alt="profile icon"   src={
-            auth.reqUser?.profilePicture ||
-            tempPicture ||
-            "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
-          }/>
+          />
         </label>
 
         <input
@@ -91,7 +82,6 @@ const Profile = ({ handleCloseOpenProfile }) => {
         />
       </div>
 
-      {/* name section */}
       <div className="bg-white px-3">
         <p className="py-3">Your name</p>
 

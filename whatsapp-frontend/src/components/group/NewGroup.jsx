@@ -4,11 +4,11 @@ import { Avatar, Button, CircularProgress } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { createGroupChat } from "../../redux/chat/action";
 
-const NewGroup = ({groupMember,setIsGroup}) => {
+const NewGroup = ({ groupMember, setIsGroup }) => {
   const [isImageUploading, setIsImageUploading] = useState(false);
   const [groupName, setGroupName] = useState("");
   const [groupImage, setGroupImage] = useState(null);
-  const token = localStorage.getItem("token")
+  const token = localStorage.getItem("token");
   const dispatch = useDispatch();
   const handleCreateGroup = () => {
     let userIds = [];
@@ -29,7 +29,7 @@ const NewGroup = ({groupMember,setIsGroup}) => {
   };
 
   const uploadToCloudinary = (pics) => {
-    setIsImageUploading(true)
+    setIsImageUploading(true);
     const data = new FormData();
     data.append("file", pics);
     data.append("upload_preset", "whatsapp");
@@ -40,9 +40,9 @@ const NewGroup = ({groupMember,setIsGroup}) => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("imgurl",data)
+        console.log("imgurl", data);
         setGroupImage(data.url.toString());
-        setIsImageUploading(false)
+        setIsImageUploading(false);
       });
   };
   return (
@@ -54,13 +54,13 @@ const NewGroup = ({groupMember,setIsGroup}) => {
 
       <div className="flex flex-col justify-center items-center my-12">
         <label htmlFor="imgInput" className="relative">
-          {/* <img
-            className="rounded-full w-[15vw] h-[vw] cursor-pointer"
-            src={groupImage || "https://media.istockphoto.com/id/1168127003/vector/default-avatar-vector-placeholder-set-man-woman-child-teen-boy-girl-user-image-head.jpg?s=612x612&w=0&k=20&c=UulvDL4kySaaqFAkqLJjL4ggwbUvYKXbz5u1g1JZmbo="}
-            alt=""
-          /> */}
-          <Avatar sx={{width:"15rem",height:"15rem"}}
-          alt="group icon" src={groupImage || "https://media.istockphoto.com/id/1168127003/vector/default-avatar-vector-placeholder-set-man-woman-child-teen-boy-girl-user-image-head.jpg?s=612x612&w=0&k=20&c=UulvDL4kySaaqFAkqLJjL4ggwbUvYKXbz5u1g1JZmbo="}
+          <Avatar
+            sx={{ width: "15rem", height: "15rem" }}
+            alt="group icon"
+            src={
+              groupImage ||
+              "https://media.istockphoto.com/id/1168127003/vector/default-avatar-vector-placeholder-set-man-woman-child-teen-boy-girl-user-image-head.jpg?s=612x612&w=0&k=20&c=UulvDL4kySaaqFAkqLJjL4ggwbUvYKXbz5u1g1JZmbo="
+            }
           />
           {isImageUploading && (
             <CircularProgress className="absolute top-[5rem] left-[6rem]" />
@@ -70,7 +70,7 @@ const NewGroup = ({groupMember,setIsGroup}) => {
           type="file"
           id="imgInput"
           className="hidden"
-          onChange={(e) =>  uploadToCloudinary(e.target.files[0])}
+          onChange={(e) => uploadToCloudinary(e.target.files[0])}
           value={""}
         />
       </div>

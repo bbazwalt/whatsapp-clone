@@ -46,8 +46,13 @@ const Signup = () => {
     <div>
       <div>
         <div className="flex flex-col justify-center min-h-screen items-center">
-        <Avatar sx={{width:"10rem",height:"10rem"}}
-          alt="profile icon"   src={"https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/2044px-WhatsApp.svg.png"}/>
+          <Avatar
+            sx={{ width: "10rem", height: "10rem" }}
+            alt="profile icon"
+            src={
+              "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/2044px-WhatsApp.svg.png"
+            }
+          />
           <div className="w-[30%] p-10 shadow-md bg-white rounded-md">
             <form onSubmit={handleSubmit} className="space-y-5">
               <div>

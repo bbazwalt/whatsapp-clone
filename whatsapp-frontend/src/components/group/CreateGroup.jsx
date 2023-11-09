@@ -6,7 +6,7 @@ import NewGroup from "./NewGroup";
 import { useDispatch, useSelector } from "react-redux";
 import { searchUser } from "../../redux/auth/action";
 
-const CreateGroup = ({setIsGroup}) => {
+const CreateGroup = ({ setIsGroup }) => {
   const [newGroup, setNewGroup] = useState(false);
   const [groupMember, setGroupMember] = useState(new Set());
   const [query, setQuery] = useState("");
@@ -85,7 +85,9 @@ const CreateGroup = ({setIsGroup}) => {
           </div>
         </div>
       )}
-      {newGroup && <NewGroup setIsGroup={setIsGroup} groupMember={groupMember} />}
+      {newGroup && (
+        <NewGroup setIsGroup={setIsGroup} groupMember={groupMember} />
+      )}
     </div>
   );
 };
