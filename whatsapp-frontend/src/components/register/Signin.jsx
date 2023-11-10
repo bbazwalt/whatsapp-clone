@@ -15,7 +15,6 @@ const Signin = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("handle submit", inputData);
     setOpenSnackbar(true);
     dispatch(login(inputData));
   };

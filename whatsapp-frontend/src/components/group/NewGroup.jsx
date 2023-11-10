@@ -40,7 +40,6 @@ const NewGroup = ({ groupMember, setIsGroup }) => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("imgurl", data);
         setGroupImage(data.url.toString());
         setIsImageUploading(false);
       });

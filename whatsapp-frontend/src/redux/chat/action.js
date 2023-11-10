@@ -12,10 +12,8 @@ export const createChat = (chatData) => async (dispatch) => {
       body: JSON.stringify(chatData.data),
     });
     const data = await res.json();
-    console.log("create chat", data);
     dispatch({ type: CREATE_CHAT, payload: data });
   } catch (error) {
-    console.log("catch error", error);
   }
 };
 
@@ -30,10 +28,8 @@ export const createGroupChat = (chatData) => async (dispatch) => {
       body: JSON.stringify(chatData.group),
     });
     const data = await res.json();
-    console.log("create group", data);
     dispatch({ type: CREATE_GROUP, payload: data });
   } catch (error) {
-    console.log("catch error", error);
   }
 };
 
@@ -47,9 +43,7 @@ export const getUsersChat = (token) => async (dispatch) => {
       },
     });
     const data = await res.json();
-    console.log("get users chat", data);
     dispatch({ type: GET_USERS_CHAT, payload: data });
   } catch (error) {
-    console.log("catch error", error);
   }
 };

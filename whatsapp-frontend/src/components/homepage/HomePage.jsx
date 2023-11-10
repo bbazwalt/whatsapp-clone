@@ -44,6 +44,7 @@ const HomePage = () => {
   const connect = () => {
     const sock = new SockJS("http://localhost:8083/ws");
     const temp = over(sock);
+    temp.debug=null
     setStopClient(temp);
 
     const headers = {
@@ -64,7 +65,6 @@ const HomePage = () => {
   };
 
   const onError = (error) => {
-    console.log("no error ", error);
   };
 
   const onConnect = () => {
@@ -79,7 +79,6 @@ const HomePage = () => {
   }, [message.newMessage]);
 
   const onMessageService = (payload) => {
-    console.log("receive message ", JSON.parse(payload.body));
     const receivedMessage = JSON.parse(payload.body);
     setMessages([...messages, receivedMessage]);
   };
@@ -147,7 +146,6 @@ const HomePage = () => {
   const handleCurrentChat = (item) => {
     setCurrentChat(item);
   };
-  console.log("current chat", currentChat);
 
   useEffect(() => {
     dispatch(currentUser(token));

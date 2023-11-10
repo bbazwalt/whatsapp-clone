@@ -41,7 +41,6 @@ const Profile = ({ handleCloseOpenProfile }) => {
       .then((res) => res.json())
       .then((data) => {
         setTempPicture(data.url.toString());
-        console.log("imgurl", data.url.toString());
         const dataa = {
           id: auth.reqUser.id,
           token: localStorage.getItem("token"),

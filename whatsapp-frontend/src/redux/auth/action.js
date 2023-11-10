@@ -21,10 +21,8 @@ export const register = (data) => async (dispatch) => {
     if (resData.jwt) {
       localStorage.setItem("token", resData.jwt);
     }
-    console.log("register ", resData);
     dispatch({ type: REGISTER, payload: resData });
   } catch (error) {
-    console.log("catch error ", error);
   }
 };
 
@@ -41,15 +39,12 @@ export const login = (data) => async (dispatch) => {
     if (resData.jwt) {
       localStorage.setItem("token", resData.jwt);
     }
-    console.log("login ", resData);
     dispatch({ type: LOGIN, payload: resData });
   } catch (error) {
-    console.log("catch error ", error);
   }
 };
 
 export const currentUser = (token) => async (dispatch) => {
-  console.log("current user token", token);
   try {
     const res = await fetch(`${BASE_API_URL}/api/v1/users/profile`, {
       method: "GET",
@@ -59,15 +54,12 @@ export const currentUser = (token) => async (dispatch) => {
       },
     });
     const resData = await res.json();
-    console.log("current user ", resData);
     dispatch({ type: REQ_USER, payload: resData });
   } catch (error) {
-    console.log("catch error ", error);
   }
 };
 
 export const searchUser = (data) => async (dispatch) => {
-  console.log("search data", data);
   try {
     const res = await fetch(
       `${BASE_API_URL}/api/v1/users/search?name=${data.keyword}`,
@@ -80,10 +72,8 @@ export const searchUser = (data) => async (dispatch) => {
       }
     );
     const resData = await res.json();
-    console.log("search user ", resData);
     dispatch({ type: SEARCH_USER, payload: resData });
   } catch (error) {
-    console.log("catch error ", error);
   }
 };
 
@@ -98,10 +88,8 @@ export const updateUser = (data) => async (dispatch) => {
       body: JSON.stringify(data.data)
     });
     const resData = await res.json();
-    console.log("update user ", resData);
     dispatch({ type: UPDATE_USER, payload: resData });
   } catch (error) {
-    console.log("catch error ", error);
   }
 };
 
