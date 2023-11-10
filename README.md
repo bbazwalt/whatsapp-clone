@@ -17,9 +17,9 @@ Whatsapp Clone Web App
 
 ![Alt text](https://github.com/bbazwalt/whatsapp-clone/blob/main/screenshots/home-page.png)
 
-## Profile Page:
+## My Profile Page:
 
-![Alt text](https://github.com/bbazwalt/whatsapp-clone/blob/main/screenshots/profile-page.png)
+![Alt text](https://github.com/bbazwalt/whatsapp-clone/blob/main/screenshots/my-profile-page.png)
 
 ## Group Chat:
 
