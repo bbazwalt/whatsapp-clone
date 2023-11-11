@@ -1,12 +1,12 @@
 # whatsapp-clone
 
-Whatsapp Clone Web App
+Whatsapp Clone Web App • Live Link: https://whatsapp-clone-web.vercel.app/
 
-• Tech Stack: Java, Spring Boot, JavaScript, React, Redux, Tailwind CSS, MUI, MySQL, Hibernate
+• Tech Stack: Java, Spring Boot, JavaScript, React, Redux, Tailwind CSS, MUI, MySQL, Hibernate, Vercel, Railway
 
-• Implemented features like real-time chat, group chat, profile picture, searching users, Login & Signup using Spring Security with JWT for Authentication
+• Implemented features like real-time chat, group chat, profile picture, searching users, Login & Signup using Spring Security with JWT for Authentication. Deployed app on Vercel
 
-• Used External API endpoints like Cloudinary API for image storage, WebSocket APIs like Spring Boot WebSocket for backend, StompJS & SockJS for frontend
+• Used External API endpoints like Railway MySQL Server, Cloudinary API for image storage, WebSocket APIs like Spring Boot WebSocket for backend, StompJS & SockJS for frontend
 
 
 ## Login Page:
