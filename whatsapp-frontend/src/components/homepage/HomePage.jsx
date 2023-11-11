@@ -23,7 +23,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { currentUser, logout, searchUser } from "../../redux/auth/action";
 import { createChat, getUsersChat } from "../../redux/chat/action";
 import { createMessage, getAllMessages } from "../../redux/message/action";
-import SockJS from "sockjs-client/dist/sockjs";
+import SockJS from "sockjs-client/dist/sockjs.js";
 import { over } from "stompjs";
 const HomePage = () => {
   const navigate = useNavigate();
@@ -34,18 +34,19 @@ const HomePage = () => {
   const [isProfile, setIsProfile] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-  const [isConnect, setIsConnect] = useState(false);
   const [isGroup, setIsGroup] = useState(false);
   const dispatch = useDispatch();
   const { auth, chat, message } = useSelector((store) => store);
   const token = localStorage.getItem("token");
-  const [stompClient, setStopClient] = useState();
+
+  const [stompClient, setStompClient] = useState();
+  const [isConnect, setIsConnect] = useState(false);
 
   const connect = () => {
-    const sock = new SockJS("http://localhost:8083/ws");
+    const sock = new SockJS("https://wa-server-railway-production.up.railway.app/ws");
     const temp = over(sock);
-    temp.debug=null
-    setStopClient(temp);
+    temp.debug = null;
+    setStompClient(temp);
 
     const headers = {
       Authorization: `Bearer ${token}`,
@@ -64,8 +65,7 @@ const HomePage = () => {
     }
   };
 
-  const onError = (error) => {
-  };
+  const onError = (error) => {};
 
   const onConnect = () => {
     setIsConnect(true);
@@ -78,7 +78,7 @@ const HomePage = () => {
     }
   }, [message.newMessage]);
 
-  const onMessageService = (payload) => {
+  const onMessageReceive = (payload) => {
     const receivedMessage = JSON.parse(payload.body);
     setMessages([...messages, receivedMessage]);
   };
@@ -87,18 +87,41 @@ const HomePage = () => {
     if (isConnect && stompClient && auth.reqUser && currentChat) {
       const subscription = stompClient.subscribe(
         "/group/" + currentChat.id.toString(),
-        onMessageService
+        onMessageReceive
       );
 
       return () => {
         subscription.unsubscribe();
       };
     }
-  });
+  }, [message.messages]);
+
+  useEffect(() => {
+    connect();
+  }, [isConnect]);
 
   useEffect(() => {
     setMessages(message.messages);
   }, [message.messages]);
+
+  useEffect(() => {
+    dispatch(currentUser(token));
+  }, [dispatch, token]);
+
+  useEffect(() => {
+    if (!auth.reqUser) {
+      navigate("/signin");
+    }
+  }, [auth.reqUser, navigate]);
+
+  useEffect(() => {
+    if (currentChat?.id)
+      dispatch(getAllMessages({ chatId: currentChat.id, token }));
+  }, [currentChat, dispatch, message.newMessage, token]);
+
+  useEffect(() => {
+    dispatch(getUsersChat(token));
+  }, [chat.createdChat, chat.createdGroup, dispatch, token]);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -126,10 +149,6 @@ const HomePage = () => {
     setIsProfile(true);
   };
 
-  useEffect(() => {
-    dispatch(getUsersChat(token));
-  }, [chat.createdChat, chat.createdGroup]);
-
   const handleCloseOpenProfile = () => {
     setIsProfile(false);
   };
@@ -146,25 +165,6 @@ const HomePage = () => {
   const handleCurrentChat = (item) => {
     setCurrentChat(item);
   };
-
-  useEffect(() => {
-    dispatch(currentUser(token));
-  }, [token]);
-
-  useEffect(() => {
-    if (!auth.reqUser) {
-      navigate("/signin");
-    }
-  }, [auth.reqUser]);
-
-  useEffect(() => {
-    if (currentChat?.id)
-      dispatch(getAllMessages({ chatId: currentChat.id, token }));
-  }, [currentChat, message.newMessage]);
-
-  useEffect(() => {
-    connect();
-  }, []);
 
   return (
     <div className="relative bg-slate-500">
@@ -197,7 +197,10 @@ const HomePage = () => {
                       <p>{auth.reqUser?.fullName}</p>
                     </div>
                     <div className="space-x-3 text-2xl flex">
-                      <TbCircleDashed />
+                      <TbCircleDashed
+                        className="cursor-pointer"
+                        onClick={() => navigate("/status")}
+                      />
                       <BiCommentDetail />
                       <div>
                         <BsThreeDotsVertical
@@ -262,7 +265,10 @@ const HomePage = () => {
                   {chat.chats.length > 0 &&
                     !querys &&
                     chat.chats?.map((item) => (
-                      <div onClick={() => handleCurrentChat(item)}>
+                      <div
+                        key={item.id}
+                        onClick={() => handleCurrentChat(item)}
+                      >
                         <hr />
                         {item.isGroup ? (
                           <ChatCard
@@ -277,7 +283,7 @@ const HomePage = () => {
                             isChat={true}
                             name={
                               auth.reqUser?.id !== item.users[0]?.id
-                                ? item.users[0].fullNname
+                                ? item.users[0].fullName
                                 : item.users[1].fullName
                             }
                             userImg={
@@ -339,7 +345,7 @@ const HomePage = () => {
                         ? currentChat.chatName
                         : auth.reqUser?.id === currentChat.users[0].id
                         ? currentChat.users[1].fullName
-                        : currentChat.user[0].fullName}
+                        : currentChat.users[0].fullName}
                     </p>
                   </div>
                   <div className="py-3 flex space-x-4 items-center px-3">
@@ -353,13 +359,14 @@ const HomePage = () => {
                   {messages.length > 0 &&
                     messages?.map((item, i) => (
                       <MessageCard
+                        key={i}
                         isReqUserMessage={item.user.id !== auth.reqUser.id}
                         content={item.content}
                       />
                     ))}
                 </div>
               </div>
-              <div className="footer bg-[#f0f2f5] absolute bottom-0 w-full py-3 text-2xl">
+              <div className="footer bg-[#f0f2f5] absolute w-full py-3 text-2xl">
                 <div className="flex justify-between items-center px-5 relative">
                   <BsEmojiSmile className="cursor-pointer" />
                   <ImAttachment />

@@ -15,7 +15,7 @@ public class RealtimeChat {
 	@SendTo("/group/public")
 	public Message receiveMessage(@Payload Message message) {
 
-		simpMessagingTemplate.convertAndSend("/group" + message.getChat().getId().toString(), message);
+		simpMessagingTemplate.convertAndSend("/group/" + message.getChat().getId().toString(), message);
 		return message;
 	}
 
