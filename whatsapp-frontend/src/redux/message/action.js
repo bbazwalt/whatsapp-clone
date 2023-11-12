@@ -1,4 +1,4 @@
-import { BASE_API_URL } from "../../config/api";
+import { BASE_API_URL } from "../../api/api";
 import { CREATE_NEW_MESSAGE, GET_ALL_MESSAGES } from "./actionType";
 
 export const createMessage = (messageData) => async (dispatch) => {

@@ -1,4 +1,4 @@
-import { BASE_API_URL } from "../../config/api";
+import { BASE_API_URL } from "../../api/api";
 import { CREATE_CHAT, CREATE_GROUP, GET_USERS_CHAT } from "./actionType";
 
 export const createChat = (chatData) => async (dispatch) => {
