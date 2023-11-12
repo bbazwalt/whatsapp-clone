@@ -6,7 +6,7 @@ import NewGroup from "./NewGroup";
 import { useDispatch, useSelector } from "react-redux";
 import { searchUser } from "../../redux/auth/action";
 
-const CreateGroup = ({ setIsGroup }) => {
+const CreateGroup = ({ setIsGroup, onClick }) => {
   const [newGroup, setNewGroup] = useState(false);
   const [groupMember, setGroupMember] = useState(new Set());
   const [query, setQuery] = useState("");
@@ -28,7 +28,10 @@ const CreateGroup = ({ setIsGroup }) => {
       {!newGroup && (
         <div>
           <div className="flex items-center space-x-10 bg-[#008069] text-white pt-16 px-10 pb-5">
-            <BsArrowLeft className="cursor-pointer text-2xl font-bold" />
+            <BsArrowLeft
+              className="cursor-pointer text-2xl font-bold"
+              onClick={onClick}
+            />
             <p className="text-xl font-semibold">Add group partcipants</p>
           </div>
           <div className="relative bg-white py-4 px-3">

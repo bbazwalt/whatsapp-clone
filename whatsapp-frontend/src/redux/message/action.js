@@ -13,8 +13,7 @@ export const createMessage = (messageData) => async (dispatch) => {
     });
     const data = await res.json();
     dispatch({ type: CREATE_NEW_MESSAGE, payload: data });
-  } catch (error) {
-  }
+  } catch (error) {}
 };
 
 export const getAllMessages = (reqData) => async (dispatch) => {
@@ -31,6 +30,5 @@ export const getAllMessages = (reqData) => async (dispatch) => {
     );
     const data = await res.json();
     dispatch({ type: GET_ALL_MESSAGES, payload: data });
-  } catch (error) {
-  }
+  } catch (error) {}
 };

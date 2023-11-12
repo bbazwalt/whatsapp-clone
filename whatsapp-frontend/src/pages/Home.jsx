@@ -11,21 +11,21 @@ import {
   BsThreeDotsVertical,
 } from "react-icons/bs";
 import { ImAttachment } from "react-icons/im";
-import ChatCard from "../chatcard/ChatCard";
-import MessageCard from "../messagecard/MessageCard";
-import Profile from "../profile/Profile";
-import logo from "./defaultlogo.png";
-import wallpaper from "./wallpaper.jpg";
-import "./HomePage.css";
+import ChatCard from "../components/chatcard/ChatCard";
+import MessageCard from "../components/messagecard/MessageCard";
+import Profile from "../components/profile/Profile";
+import logo from "../assets/defaultLogo.png";
+import wallpaper from "../assets/wallpaper.jpg";
+import "../styles/Home.css";
 import { useNavigate } from "react-router-dom";
-import CreateGroup from "../group/CreateGroup";
+import CreateGroup from "../components/group/CreateGroup";
 import { useDispatch, useSelector } from "react-redux";
-import { currentUser, logout, searchUser } from "../../redux/auth/action";
-import { createChat, getUsersChat } from "../../redux/chat/action";
-import { createMessage, getAllMessages } from "../../redux/message/action";
+import { currentUser, logout, searchUser } from "../redux/auth/action";
+import { createChat, getUsersChat } from "../redux/chat/action";
+import { createMessage, getAllMessages } from "../redux/message/action";
 import SockJS from "sockjs-client/dist/sockjs.js";
 import { over } from "stompjs";
-const HomePage = () => {
+const Home = () => {
   const navigate = useNavigate();
   const [messages, setMessages] = useState([]);
   const [querys, setQuerys] = useState("");
@@ -43,7 +43,9 @@ const HomePage = () => {
   const [isConnect, setIsConnect] = useState(false);
 
   const connect = () => {
-    const sock = new SockJS("https://wa-server-railway-production.up.railway.app/ws");
+    const sock = new SockJS(
+      "https://wa-server-railway-production.up.railway.app/ws"
+    );
     const temp = over(sock);
     temp.debug = null;
     setStompClient(temp);
@@ -138,6 +140,7 @@ const HomePage = () => {
     dispatch(searchUser({ keyword, token }));
   };
   const handleCreateNewMessage = () => {
+    setContent("");
     dispatch(
       createMessage({
         token,
@@ -146,18 +149,26 @@ const HomePage = () => {
     );
   };
   const handleNavigate = () => {
+    handleClose();
     setIsProfile(true);
   };
 
   const handleCloseOpenProfile = () => {
+    handleClose();
     setIsProfile(false);
   };
 
+  const handleCloseOpenGroup = () => {
+    setIsGroup(false);
+  };
+
   const handleCreateGroup = () => {
+    handleClose();
     setIsGroup(true);
   };
 
   const handleLogout = () => {
+    handleClose();
     dispatch(logout());
     navigate("/signin");
   };
@@ -171,7 +182,12 @@ const HomePage = () => {
       <div className="w-full py-14 bg-[#00a884] ">
         <div className="flex bg-[#f0f2f5] h-[90vh] w-[95vw] absolute top-[5vh] left-[2vw]">
           <div className="left w-[30%] bg-[#e8e9ec] h-full ">
-            {isGroup && <CreateGroup setIsGroup={setIsGroup} />}
+            {isGroup && (
+              <CreateGroup
+                setIsGroup={setIsGroup}
+                onClick={handleCloseOpenGroup}
+              />
+            )}
             {isProfile && (
               <div className="w-full h-full">
                 <Profile handleCloseOpenProfile={handleCloseOpenProfile} />
@@ -197,11 +213,6 @@ const HomePage = () => {
                       <p>{auth.reqUser?.fullName}</p>
                     </div>
                     <div className="space-x-3 text-2xl flex">
-                      <TbCircleDashed
-                        className="cursor-pointer"
-                        onClick={() => navigate("/status")}
-                      />
-                      <BiCommentDetail />
                       <div>
                         <BsThreeDotsVertical
                           id="basic-button"
@@ -220,7 +231,9 @@ const HomePage = () => {
                             "aria-labelledby": "basic-button",
                           }}
                         >
-                          <MenuItem onClick={handleClose}>Profile</MenuItem>
+                          <MenuItem onClick={handleNavigate}>
+                            My Profile
+                          </MenuItem>
                           <MenuItem onClick={handleCreateGroup}>
                             Create group
                           </MenuItem>
@@ -242,10 +255,7 @@ const HomePage = () => {
                     }}
                     value={querys}
                   />
-                  <AiOutlineSearch className="left-5 top-7 absolute" />
-                  <div>
-                    <BsFilter className="ml-4 text-3xl" />
-                  </div>
+                  <AiOutlineSearch className="left-10 top-7 absolute" />
                 </div>
                 <div className="bg-white overflow-y-scroll h-[72vh] px-3">
                   {querys &&
@@ -348,10 +358,7 @@ const HomePage = () => {
                         : currentChat.users[0].fullName}
                     </p>
                   </div>
-                  <div className="py-3 flex space-x-4 items-center px-3">
-                    <AiOutlineSearch />
-                    <BsThreeDotsVertical />
-                  </div>
+                  <div className="py-3 flex space-x-4 items-center px-3"></div>
                 </div>
               </div>
               <div className="px-10 h-[85vh] overflow-y-scroll">
@@ -368,10 +375,8 @@ const HomePage = () => {
               </div>
               <div className="footer bg-[#f0f2f5] absolute w-full py-3 text-2xl">
                 <div className="flex justify-between items-center px-5 relative">
-                  <BsEmojiSmile className="cursor-pointer" />
-                  <ImAttachment />
                   <input
-                    className="py-2 outline-none border-none bg-white pl-4 rounded-md w-[85%]"
+                    className="py-2 outline-none border-none bg-white pl-4 rounded-md w-[90%]"
                     type="text"
                     onChange={(e) => setContent(e.target.value)}
                     placeholder="Type a message"
@@ -379,11 +384,10 @@ const HomePage = () => {
                     onKeyPress={(e) => {
                       if (e.key === "Enter") {
                         handleCreateNewMessage();
-                        setContent("");
                       }
                     }}
                   />
-                  <BsMicFill />
+                  <button onClick={handleCreateNewMessage}>Send</button>
                 </div>
               </div>
             </div>
@@ -394,4 +398,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default Home;

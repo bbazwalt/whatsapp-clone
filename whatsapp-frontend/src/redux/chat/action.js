@@ -13,8 +13,7 @@ export const createChat = (chatData) => async (dispatch) => {
     });
     const data = await res.json();
     dispatch({ type: CREATE_CHAT, payload: data });
-  } catch (error) {
-  }
+  } catch (error) {}
 };
 
 export const createGroupChat = (chatData) => async (dispatch) => {
@@ -29,8 +28,7 @@ export const createGroupChat = (chatData) => async (dispatch) => {
     });
     const data = await res.json();
     dispatch({ type: CREATE_GROUP, payload: data });
-  } catch (error) {
-  }
+  } catch (error) {}
 };
 
 export const getUsersChat = (token) => async (dispatch) => {
@@ -44,6 +42,5 @@ export const getUsersChat = (token) => async (dispatch) => {
     });
     const data = await res.json();
     dispatch({ type: GET_USERS_CHAT, payload: data });
-  } catch (error) {
-  }
+  } catch (error) {}
 };

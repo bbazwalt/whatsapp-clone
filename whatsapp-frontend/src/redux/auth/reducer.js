@@ -1,11 +1,17 @@
-import { LOGIN, REGISTER, REQ_USER, SEARCH_USER, UPDATE_USER } from "./actionType";
+import {
+  LOGIN,
+  REGISTER,
+  REQ_USER,
+  SEARCH_USER,
+  UPDATE_USER,
+} from "./actionType";
 
 const initialValue = {
   signup: null,
   signin: null,
   reqUser: null,
   searchUser: [],
-  updateUser:null,
+  updateUser: null,
 };
 
 export const authReducer = (store = initialValue, { type, payload }) => {
@@ -19,6 +25,6 @@ export const authReducer = (store = initialValue, { type, payload }) => {
     return { ...store, searchUser: payload };
   } else if (type === UPDATE_USER) {
     return { ...store, updateUser: payload };
-  } 
+  }
   return store;
 };

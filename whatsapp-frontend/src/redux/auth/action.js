@@ -22,8 +22,7 @@ export const register = (data) => async (dispatch) => {
       localStorage.setItem("token", resData.jwt);
     }
     dispatch({ type: REGISTER, payload: resData });
-  } catch (error) {
-  }
+  } catch (error) {}
 };
 
 export const login = (data) => async (dispatch) => {
@@ -40,8 +39,7 @@ export const login = (data) => async (dispatch) => {
       localStorage.setItem("token", resData.jwt);
     }
     dispatch({ type: LOGIN, payload: resData });
-  } catch (error) {
-  }
+  } catch (error) {}
 };
 
 export const currentUser = (token) => async (dispatch) => {
@@ -55,8 +53,7 @@ export const currentUser = (token) => async (dispatch) => {
     });
     const resData = await res.json();
     dispatch({ type: REQ_USER, payload: resData });
-  } catch (error) {
-  }
+  } catch (error) {}
 };
 
 export const searchUser = (data) => async (dispatch) => {
@@ -73,8 +70,7 @@ export const searchUser = (data) => async (dispatch) => {
     );
     const resData = await res.json();
     dispatch({ type: SEARCH_USER, payload: resData });
-  } catch (error) {
-  }
+  } catch (error) {}
 };
 
 export const updateUser = (data) => async (dispatch) => {
@@ -85,12 +81,11 @@ export const updateUser = (data) => async (dispatch) => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${data.token}`,
       },
-      body: JSON.stringify(data.data)
+      body: JSON.stringify(data.data),
     });
     const resData = await res.json();
     dispatch({ type: UPDATE_USER, payload: resData });
-  } catch (error) {
-  }
+  } catch (error) {}
 };
 
 export const logout = () => async (dispatch) => {

@@ -3,7 +3,7 @@ import { green } from "@mui/material/colors";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { currentUser, login } from "../../redux/auth/action";
+import { currentUser, login } from "../redux/auth/action";
 
 const Signin = () => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
