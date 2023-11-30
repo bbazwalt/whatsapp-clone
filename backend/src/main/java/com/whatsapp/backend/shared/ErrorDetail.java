@@ -1,5 +1,7 @@
 package com.whatsapp.backend.shared;
 
+import java.time.LocalDateTime;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,9 +9,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ApiResponse {
+public class ErrorDetail {
 
+	private String error;
 	private String message;
-	private boolean status;
+	private LocalDateTime timeStamp;
 
 }

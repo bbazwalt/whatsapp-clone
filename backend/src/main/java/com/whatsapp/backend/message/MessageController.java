@@ -2,6 +2,7 @@ package com.whatsapp.backend.message;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,40 +21,46 @@ import com.whatsapp.backend.shared.ApiResponse;
 import com.whatsapp.backend.user.User;
 import com.whatsapp.backend.user.UserService;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
 @RestController
 @RequestMapping("api/v1/messages")
+@NoArgsConstructor
+@AllArgsConstructor
 public class MessageController {
 
-	private MessageService messageService;
-	private UserService userService;
-	
-	public MessageController(MessageService messageService, UserService userService) {
-		super();
-		this.messageService = messageService;
-		this.userService = userService;
-	}
-	
+	@Autowired
+	MessageService messageService;
+
+	@Autowired
+	UserService userService;
+
 	@PostMapping("/create")
-	public ResponseEntity<Message> sendMessageHandler(@RequestBody SendMessageRequest req, @RequestHeader("Authorization") String jwt) throws UserException, ChatException{
+	public ResponseEntity<Message> sendMessageHandler(@RequestBody SendMessageRequest req,
+			@RequestHeader("Authorization") String jwt) throws UserException, ChatException {
 		User user = userService.findUserProfile(jwt);
-		req.setUserId(user.getId());;
+		req.setUserId(user.getId());
+		;
 		Message message = messageService.sendMessage(req);
 		return new ResponseEntity<Message>(message, HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/chat/{chatId}")
-	public ResponseEntity<List<Message>> getChatMessagesHandler(@PathVariable Long chatId, @RequestHeader("Authorization") String jwt) throws UserException, ChatException{
+	public ResponseEntity<List<Message>> getChatMessagesHandler(@PathVariable Long chatId,
+			@RequestHeader("Authorization") String jwt) throws UserException, ChatException {
 		User user = userService.findUserProfile(jwt);
 		List<Message> messages = messageService.getChatMessages(chatId, user);
 		return new ResponseEntity<List<Message>>(messages, HttpStatus.OK);
 	}
-	
+
 	@DeleteMapping("/chat/{chatId}")
-	public ResponseEntity<ApiResponse> deleteMessagesHandler(@PathVariable Long messageId, @RequestHeader("Authorization") String jwt) throws UserException, ChatException, MessageException{
+	public ResponseEntity<ApiResponse> deleteMessagesHandler(@PathVariable Long messageId,
+			@RequestHeader("Authorization") String jwt) throws UserException, ChatException, MessageException {
 		User user = userService.findUserProfile(jwt);
 		messageService.deleteMessage(messageId, user);
-		ApiResponse res = new ApiResponse("Message deleted successfully",true);
+		ApiResponse res = new ApiResponse("Message deleted successfully", true);
 		return new ResponseEntity<ApiResponse>(res, HttpStatus.OK);
 	}
-	
+
 }

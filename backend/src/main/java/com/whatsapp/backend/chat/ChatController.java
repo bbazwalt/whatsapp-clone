@@ -2,6 +2,7 @@ package com.whatsapp.backend.chat;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,18 +21,20 @@ import com.whatsapp.backend.shared.ApiResponse;
 import com.whatsapp.backend.user.User;
 import com.whatsapp.backend.user.UserService;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
 @RestController
 @RequestMapping("/api/v1/chats")
+@NoArgsConstructor
+@AllArgsConstructor
 public class ChatController {
 
-	private ChatService chatService;
-	private UserService userService;
+	@Autowired
+	ChatService chatService;
 
-	public ChatController(ChatService chatService, UserService userService) {
-		super();
-		this.chatService = chatService;
-		this.userService = userService;
-	}
+	@Autowired
+	UserService userService;
 
 	@PostMapping("/single")
 	public ResponseEntity<Chat> createChatHandler(@RequestBody SingleChatRequest req,

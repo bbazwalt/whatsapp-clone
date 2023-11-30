@@ -1,10 +1,11 @@
 package com.whatsapp.backend.auth;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,24 +20,26 @@ import com.whatsapp.backend.user.CustomUserService;
 import com.whatsapp.backend.user.User;
 import com.whatsapp.backend.user.UserRepository;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
 @RestController
 @RequestMapping("/auth")
+@NoArgsConstructor
+@AllArgsConstructor
 public class AuthController {
 
-	private UserRepository userRepository;
-	private PasswordEncoder passwordEncoder;
-	private TokenProvider tokenProvider;
-	private CustomUserService customUserService;
+	@Autowired
+	UserRepository userRepository;
 
-	public AuthController(UserRepository userRepository, PasswordEncoder passwordEncoder,TokenProvider tokenProvider,
-			CustomUserService customUserService) {
-		super();
-		this.userRepository = userRepository;
-		this.passwordEncoder = passwordEncoder;
-		this.tokenProvider=tokenProvider;
-		this.customUserService = customUserService;
-		
-	}
+	@Autowired
+	PasswordEncoder passwordEncoder;
+
+	@Autowired
+	TokenProvider tokenProvider;
+
+	@Autowired
+	CustomUserService customUserService;
 
 	@PostMapping("/signup")
 	public ResponseEntity<AuthResponse> createUserHandler(@RequestBody User user) throws UserException {

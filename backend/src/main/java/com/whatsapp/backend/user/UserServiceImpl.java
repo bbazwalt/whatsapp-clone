@@ -3,23 +3,26 @@ package com.whatsapp.backend.user;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 
 import com.whatsapp.backend.configuration.TokenProvider;
 import com.whatsapp.backend.exception.UserException;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
 @Service
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserServiceImpl implements UserService {
 
-	private UserRepository userRepository;
-	private TokenProvider tokenProvider;
+	@Autowired
+	UserRepository userRepository;
 
-	public UserServiceImpl(UserRepository userRepository, TokenProvider tokenProvider) {
-		super();
-		this.userRepository = userRepository;
-		this.tokenProvider = tokenProvider;
-	}
+	@Autowired
+	private TokenProvider tokenProvider;
 
 	@Override
 	public User findUserById(Long id) throws UserException {
