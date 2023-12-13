@@ -280,7 +280,7 @@ const Home = () => {
                         onClick={() => handleCurrentChat(item)}
                       >
                         <hr />
-                        {item.isGroup ? (
+                        {item.group ? (
                           <ChatCard
                             name={item.chatName}
                             userImg={
@@ -339,7 +339,7 @@ const Home = () => {
                     <img
                       className="w-10 h-10 rounded-full"
                       src={
-                        currentChat.isGroup
+                        currentChat.group
                           ? currentChat.chatImage ||
                             "https://media.istockphoto.com/id/1168127003/vector/default-avatar-vector-placeholder-set-man-woman-child-teen-boy-girl-user-image-head.jpg?s=612x612&w=0&k=20&c=UulvDL4kySaaqFAkqLJjL4ggwbUvYKXbz5u1g1JZmbo="
                           : auth.reqUser.id !== currentChat.users[0].id
@@ -351,7 +351,7 @@ const Home = () => {
                       alt=""
                     />
                     <p>
-                      {currentChat.isGroup
+                      {currentChat.group
                         ? currentChat.chatName
                         : auth.reqUser?.id === currentChat.users[0].id
                         ? currentChat.users[1].fullName
