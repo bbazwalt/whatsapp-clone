@@ -1,5 +1,6 @@
 package com.whatsapp.backend.message;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.whatsapp.backend.exception.ChatException;
 import com.whatsapp.backend.exception.MessageException;
 import com.whatsapp.backend.exception.UserException;
+import com.whatsapp.backend.message.vm.MessageVM;
 import com.whatsapp.backend.shared.ApiResponse;
 import com.whatsapp.backend.user.User;
 import com.whatsapp.backend.user.UserService;
@@ -37,21 +39,21 @@ public class MessageController {
 	UserService userService;
 
 	@PostMapping("/create")
-	public ResponseEntity<Message> sendMessageHandler(@RequestBody SendMessageRequest req,
+	public ResponseEntity<MessageVM> sendMessageHandler(@RequestBody SendMessageRequest req,
 			@RequestHeader("Authorization") String jwt) throws UserException, ChatException {
 		User user = userService.findUserProfile(jwt);
 		req.setUserId(user.getId());
 		;
 		Message message = messageService.sendMessage(req);
-		return new ResponseEntity<Message>(message, HttpStatus.OK);
+		return new ResponseEntity<MessageVM>(new MessageVM(message), HttpStatus.OK);
 	}
 
 	@GetMapping("/chat/{chatId}")
-	public ResponseEntity<List<Message>> getChatMessagesHandler(@PathVariable Long chatId,
+	public ResponseEntity<List<MessageVM>> getChatMessagesHandler(@PathVariable Long chatId,
 			@RequestHeader("Authorization") String jwt) throws UserException, ChatException {
 		User user = userService.findUserProfile(jwt);
 		List<Message> messages = messageService.getChatMessages(chatId, user);
-		return new ResponseEntity<List<Message>>(messages, HttpStatus.OK);
+		return new ResponseEntity<List<MessageVM>>(toMessageVM(messages), HttpStatus.OK);
 	}
 
 	@DeleteMapping("/chat/{chatId}")
@@ -61,6 +63,14 @@ public class MessageController {
 		messageService.deleteMessage(messageId, user);
 		ApiResponse res = new ApiResponse("Message deleted successfully", true);
 		return new ResponseEntity<ApiResponse>(res, HttpStatus.OK);
+	}
+
+	private List<MessageVM> toMessageVM(List<Message> messages) {
+		List<MessageVM> list = new ArrayList<>();
+		for (Message message : messages) {
+			list.add(new MessageVM(message));
+		}
+		return list;
 	}
 
 }
