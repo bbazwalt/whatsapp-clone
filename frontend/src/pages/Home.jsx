@@ -1,20 +1,14 @@
 import React, { useEffect, useState } from "react";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { TbCircleDashed } from "react-icons/tb";
-import { BiCommentDetail } from "react-icons/bi";
 import { AiOutlineSearch } from "react-icons/ai";
-import {
-  BsEmojiSmile,
-  BsFilter,
-  BsMicFill,
-  BsThreeDotsVertical,
-} from "react-icons/bs";
-import { ImAttachment } from "react-icons/im";
+import { BsThreeDotsVertical } from "react-icons/bs";
 import ChatCard from "../components/chatcard/ChatCard";
 import MessageCard from "../components/messagecard/MessageCard";
 import Profile from "../components/profile/Profile";
-import logo from "../assets/defaultLogo.png";
+import logo from "../assets/default-logo.png";
+import blankProfilePicture from "../assets/blank-profile-picture.webp";
+import blankGroupPicture from "../assets/blank-group-picture.jpg";
 import wallpaper from "../assets/wallpaper.jpg";
 import "../styles/Home.css";
 import { useNavigate } from "react-router-dom";
@@ -25,6 +19,7 @@ import { createChat, getUsersChat } from "../redux/chat/action";
 import { createMessage, getAllMessages } from "../redux/message/action";
 import SockJS from "sockjs-client/dist/sockjs.js";
 import { over } from "stompjs";
+import { BASE_API_URL } from "../api/api";
 const Home = () => {
   const navigate = useNavigate();
   const [messages, setMessages] = useState([]);
@@ -43,9 +38,7 @@ const Home = () => {
   const [isConnect, setIsConnect] = useState(false);
 
   const connect = () => {
-    const sock = new SockJS(
-      "https://wa-server-railway-production.up.railway.app/ws"
-    );
+    const sock = new SockJS(BASE_API_URL + "/ws");
     const temp = over(sock);
     temp.debug = null;
     setStompClient(temp);
@@ -205,8 +198,7 @@ const Home = () => {
                       <img
                         className="rounded-full w-10 h-10 cursor-pointer"
                         src={
-                          auth.reqUser?.profilePicture ||
-                          "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
+                          auth.reqUser?.profilePicture || blankProfilePicture
                         }
                         alt=""
                       />
@@ -264,10 +256,7 @@ const Home = () => {
                         <hr />
                         <ChatCard
                           name={item.fullName}
-                          userImg={
-                            item.profilePicture ||
-                            "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
-                          }
+                          userImg={item.profilePicture || blankProfilePicture}
                         />
                       </div>
                     ))}
@@ -283,10 +272,7 @@ const Home = () => {
                         {item.group ? (
                           <ChatCard
                             name={item.chatName}
-                            userImg={
-                              item.chatImage ||
-                              "https://media.istockphoto.com/id/1168127003/vector/default-avatar-vector-placeholder-set-man-woman-child-teen-boy-girl-user-image-head.jpg?s=612x612&w=0&k=20&c=UulvDL4kySaaqFAkqLJjL4ggwbUvYKXbz5u1g1JZmbo="
-                            }
+                            userImg={item.chatImage || blankGroupPicture}
                           />
                         ) : (
                           <ChatCard
@@ -299,9 +285,9 @@ const Home = () => {
                             userImg={
                               auth.reqUser.id !== item.users[0].id
                                 ? item.users[0].profilePicture ||
-                                  "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
+                                  blankProfilePicture
                                 : item.users[1].profilePicture ||
-                                  "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
+                                  blankProfilePicture
                             }
                           />
                         )}
@@ -340,13 +326,12 @@ const Home = () => {
                       className="w-10 h-10 rounded-full"
                       src={
                         currentChat.group
-                          ? currentChat.chatImage ||
-                            "https://media.istockphoto.com/id/1168127003/vector/default-avatar-vector-placeholder-set-man-woman-child-teen-boy-girl-user-image-head.jpg?s=612x612&w=0&k=20&c=UulvDL4kySaaqFAkqLJjL4ggwbUvYKXbz5u1g1JZmbo="
+                          ? currentChat.chatImage || blankGroupPicture
                           : auth.reqUser.id !== currentChat.users[0].id
                           ? currentChat.users[0].profilePicture ||
-                            "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
+                            blankProfilePicture
                           : currentChat.users[1].profilePicture ||
-                            "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
+                            blankProfilePicture
                       }
                       alt=""
                     />

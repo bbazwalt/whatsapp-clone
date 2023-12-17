@@ -89,7 +89,11 @@ const CreateGroup = ({ setIsGroup, onClick }) => {
         </div>
       )}
       {newGroup && (
-        <NewGroup setIsGroup={setIsGroup} groupMember={groupMember} />
+        <NewGroup
+          setIsGroup={setIsGroup}
+          groupMember={groupMember}
+          setNewGroup={setNewGroup}
+        />
       )}
     </div>
   );

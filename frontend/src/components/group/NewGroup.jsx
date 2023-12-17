@@ -3,8 +3,9 @@ import { BsArrowLeft, BsCheck2 } from "react-icons/bs";
 import { Avatar, Button, CircularProgress } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { createGroupChat } from "../../redux/chat/action";
+import blankGroupPicture from "../../assets/blank-group-picture.jpg";
 
-const NewGroup = ({ groupMember, setIsGroup }) => {
+const NewGroup = ({ groupMember, setIsGroup, setNewGroup }) => {
   const [isImageUploading, setIsImageUploading] = useState(false);
   const [groupName, setGroupName] = useState("");
   const [groupImage, setGroupImage] = useState(null);
@@ -47,7 +48,12 @@ const NewGroup = ({ groupMember, setIsGroup }) => {
   return (
     <div className="w-full h-full">
       <div className="flex items-center space-x-10 bg-[#008069] text-white pt-16 px-10 pb-5">
-        <BsArrowLeft className="cursor-pointer text-2xl font-bold" />
+        <BsArrowLeft
+          className="cursor-pointer text-2xl font-bold"
+          onClick={() => {
+            setNewGroup(false);
+          }}
+        />
         <p className="text-xl font-semibold">New Group</p>
       </div>
 
@@ -56,10 +62,7 @@ const NewGroup = ({ groupMember, setIsGroup }) => {
           <Avatar
             sx={{ width: "15rem", height: "15rem" }}
             alt="group icon"
-            src={
-              groupImage ||
-              "https://media.istockphoto.com/id/1168127003/vector/default-avatar-vector-placeholder-set-man-woman-child-teen-boy-girl-user-image-head.jpg?s=612x612&w=0&k=20&c=UulvDL4kySaaqFAkqLJjL4ggwbUvYKXbz5u1g1JZmbo="
-            }
+            src={groupImage || blankGroupPicture}
           />
           {isImageUploading && (
             <CircularProgress className="absolute top-[5rem] left-[6rem]" />

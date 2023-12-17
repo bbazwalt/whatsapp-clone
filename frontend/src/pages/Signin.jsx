@@ -1,5 +1,6 @@
 import { Button, Snackbar, Alert, Avatar } from "@mui/material";
 import { green } from "@mui/material/colors";
+import logo from "../assets/whatsapp-icon.svg.webp";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -43,9 +44,7 @@ const Signin = () => {
         <Avatar
           sx={{ width: "10rem", height: "10rem" }}
           alt="profile icon"
-          src={
-            "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/2044px-WhatsApp.svg.png"
-          }
+          src={logo}
         />
         <div className="w-[30%] p-10 shadow-md bg-white rounded-md">
           <form onSubmit={handleSubmit} className="space-y-5">

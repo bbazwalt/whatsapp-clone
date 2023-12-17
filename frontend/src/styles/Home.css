@@ -1,8 +1,7 @@
-::-webkit-scrollbar{
-    width: 5px;
+::-webkit-scrollbar {
+  width: 5px;
 }
 
-::-webkit-scrollbar-thumb{
-    background-color: gray;
+::-webkit-scrollbar-thumb {
+  background-color: gray;
 }
-

@@ -3,6 +3,7 @@ import { BsArrowLeft, BsCheck2, BsPencilFill } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUser } from "../../redux/auth/action";
 import { Avatar } from "@mui/material";
+import blankProfilePicture from "../../assets/blank-profile-picture.webp";
 
 const Profile = ({ handleCloseOpenProfile }) => {
   const [flag, setFlag] = useState(false);
@@ -66,9 +67,7 @@ const Profile = ({ handleCloseOpenProfile }) => {
             sx={{ width: "15rem", height: "15rem" }}
             alt="profile icon"
             src={
-              auth.reqUser?.profilePicture ||
-              tempPicture ||
-              "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
+              auth.reqUser?.profilePicture || tempPicture || blankProfilePicture
             }
           />
         </label>
