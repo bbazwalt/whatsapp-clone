@@ -1,6 +1,6 @@
 # whatsapp-clone
 
-Whatsapp Clone Web App • Live Link: https://whatsapp-clone-web.vercel.app/
+WhatsApp Clone Web App • Live Link: https://whatsapp-clone-web.vercel.app/
 
 • Tech Stack: Java, Spring Boot, JavaScript, React, Redux, Tailwind CSS, MUI, MySQL, Hibernate, Vercel & Railway.
 
