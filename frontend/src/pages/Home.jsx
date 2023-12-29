@@ -273,6 +273,12 @@ const Home = () => {
                           <ChatCard
                             name={item.chatName}
                             userImg={item.chatImage || blankGroupPicture}
+                            lastMessage={
+                              item.messages[messages.length - 1]?.content
+                            }
+                            timeStamp={
+                              item.messages[messages.length - 1]?.timeStamp
+                            }
                           />
                         ) : (
                           <ChatCard

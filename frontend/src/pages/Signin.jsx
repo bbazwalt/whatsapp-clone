@@ -57,6 +57,7 @@ const Signin = () => {
                 type="text"
                 name="email"
                 className="py-2 px-3 border-4 w-full rounded-md "
+                required
               />
             </div>
             <div>
@@ -68,6 +69,7 @@ const Signin = () => {
                 type="password"
                 name="password"
                 className="py-2 px-3 border-4 border-blue w-full rounded-md "
+                required
               />
             </div>
             <div>

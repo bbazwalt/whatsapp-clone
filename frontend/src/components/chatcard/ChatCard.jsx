@@ -1,6 +1,6 @@
 import React from "react";
 
-const ChatCard = ({ userImg, name }) => {
+const ChatCard = ({ userImg, name, lastMessage, timeStamp }) => {
   return (
     <div className="flex items-center justify-center py-2 group cursor-pointer">
       <div className="w-[20%]">
