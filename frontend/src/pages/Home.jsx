@@ -50,12 +50,8 @@ const Home = () => {
 
   useEffect(() => {
     if (stomClient && auth.reqUser && currentChat) {
-      stomClient.subscribe(
-        `/user/${currentChat.id}/private`,
-        onMessageReceive
-      );
+      stomClient.subscribe(`/user/${currentChat.id}/private`, onMessageReceive);
     }
-
   });
 
   const onMessageReceive = (payload) => {
@@ -90,11 +86,16 @@ const Home = () => {
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   useEffect(() => {
-    scrollToBottom();
+    const timer = setTimeout(() => {
+      scrollToBottom();
+    }, 100);
+    return () => clearTimeout(timer);
   }, [messages]);
 
   useEffect(() => {
