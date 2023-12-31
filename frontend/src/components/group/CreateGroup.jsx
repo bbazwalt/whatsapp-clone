@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
-import SelectedMember from "./SelectedMember";
-import ChatCard from "../chatcard/ChatCard";
-import NewGroup from "./NewGroup";
 import { useDispatch, useSelector } from "react-redux";
 import { searchUser } from "../../redux/auth/action";
+import ChatCard from "../chatcard/ChatCard";
+import NewGroup from "./NewGroup";
+import SelectedMember from "./SelectedMember";
 
 const CreateGroup = ({ setIsGroup, onClick }) => {
   const [newGroup, setNewGroup] = useState(false);
@@ -15,8 +15,11 @@ const CreateGroup = ({ setIsGroup, onClick }) => {
   const token = localStorage.getItem("token");
 
   const handleRemoveMember = (item) => {
-    groupMember.delete(item);
-    setGroupMember(groupMember);
+    setGroupMember((prevGroupMember) => {
+      const newGroupMember = new Set(prevGroupMember);
+      newGroupMember.delete(item);
+      return newGroupMember;
+    });
   };
 
   const handleSearch = () => {
@@ -39,8 +42,9 @@ const CreateGroup = ({ setIsGroup, onClick }) => {
               {groupMember.size > 0 &&
                 Array.from(groupMember).map((item) => (
                   <SelectedMember
-                    handleRemoveMember={() => handleRemoveMember(item)}
+                    handleRemoveMember={handleRemoveMember}
                     member={item}
+                    key={item.id}
                   />
                 ))}
             </div>
@@ -61,8 +65,19 @@ const CreateGroup = ({ setIsGroup, onClick }) => {
               auth.searchUser?.map((item) => (
                 <div
                   onClick={() => {
-                    groupMember.add(item);
-                    setGroupMember(groupMember);
+                    setGroupMember((prevGroupMember) => {
+                      const newGroupMember = new Set(prevGroupMember);
+
+                      const isMemberAlreadyAdded = Array.from(
+                        newGroupMember
+                      ).some((member) => member.id === item.id);
+
+                      if (!isMemberAlreadyAdded) {
+                        newGroupMember.add(item);
+                      }
+
+                      return newGroupMember;
+                    });
                     setQuery("");
                   }}
                   key={item?.id}

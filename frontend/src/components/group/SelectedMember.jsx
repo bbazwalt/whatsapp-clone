@@ -11,7 +11,7 @@ const SelectedMember = ({ handleRemoveMember, member }) => {
       />
       <p className="px-2"> {member.fullName} </p>
       <AiOutlineClose
-        onClick={handleRemoveMember}
+        onClick={() => handleRemoveMember(member)}
         className="pr-1 cursor-pointer"
       />
     </div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { AiOutlineSearch } from "react-icons/ai";
@@ -11,15 +11,16 @@ import blankProfilePicture from "../assets/blank-profile-picture.webp";
 import blankGroupPicture from "../assets/blank-group-picture.jpg";
 import wallpaper from "../assets/wallpaper.jpg";
 import "../styles/Home.css";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CreateGroup from "../components/group/CreateGroup";
 import { useDispatch, useSelector } from "react-redux";
 import { currentUser, logout, searchUser } from "../redux/auth/action";
 import { createChat, getUsersChat } from "../redux/chat/action";
 import { createMessage, getAllMessages } from "../redux/message/action";
-import SockJS from "sockjs-client/dist/sockjs.js";
-import { over } from "stompjs";
+import SockJS from "sockjs-client";
+import Stom from "stompjs";
 import { BASE_API_URL } from "../api/api";
+import { PiPaperPlaneRightFill } from "react-icons/pi";
 const Home = () => {
   const navigate = useNavigate();
   const [messages, setMessages] = useState([]);
@@ -34,66 +35,43 @@ const Home = () => {
   const { auth, chat, message } = useSelector((store) => store);
   const token = localStorage.getItem("token");
 
-  const [stompClient, setStompClient] = useState();
-  const [isConnect, setIsConnect] = useState(false);
-
-  const connect = () => {
-    const sock = new SockJS(BASE_API_URL + "/ws");
-    const temp = over(sock);
-    temp.debug = null;
-    setStompClient(temp);
-
-    const headers = {
-      Authorization: `Bearer ${token}`,
-      "X-XSRF-TOKEN": getCookie("XSRF-TOKEN"),
-    };
-
-    temp.connect(headers, onConnect, onError);
-  };
-
-  const getCookie = () => {
-    const value = `; ${document.cookie}`;
-    // eslint-disable-next-line no-restricted-globals
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) {
-      return parts.pop().split(";").shift();
-    }
-  };
-
-  const onError = (error) => {};
-
-  const onConnect = () => {
-    setIsConnect(true);
-  };
+  const [stomClient, setStomClient] = useState(null);
 
   useEffect(() => {
-    if (message.newMessage && stompClient) {
-      setMessages([...messages, message.newMessage]);
-      stompClient?.send("/app/message", {}, JSON.stringify(message.newMessage));
+    const sock = new SockJS(BASE_API_URL + "/ws");
+    const stomp = Stom.over(sock);
+    setStomClient(stomp);
+    stomp.connect({}, onConnect, onErr);
+  }, []);
+
+  const onConnect = () => {};
+
+  const onErr = (err) => {};
+
+  useEffect(() => {
+    if (stomClient && auth.reqUser && currentChat) {
+      stomClient.subscribe(
+        `/user/${currentChat.id}/private`,
+        onMessageReceive
+      );
     }
-  }, [message.newMessage]);
+
+  });
 
   const onMessageReceive = (payload) => {
     const receivedMessage = JSON.parse(payload.body);
     setMessages([...messages, receivedMessage]);
   };
 
-  useEffect(() => {
-    if (isConnect && stompClient && auth.reqUser && currentChat) {
-      const subscription = stompClient.subscribe(
-        "/group/" + currentChat.id.toString(),
-        onMessageReceive
+  const sendMessageToServer = (newMessage) => {
+    if (stomClient && newMessage) {
+      stomClient.send(
+        `/app/chat/${currentChat?.id.toString()}`,
+        {},
+        JSON.stringify(newMessage)
       );
-
-      return () => {
-        subscription.unsubscribe();
-      };
     }
-  }, [message.messages]);
-
-  useEffect(() => {
-    connect();
-  }, [isConnect]);
+  };
 
   useEffect(() => {
     setMessages(message.messages);
@@ -109,10 +87,20 @@ const Home = () => {
     }
   }, [auth.reqUser, navigate]);
 
+  const messagesEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
   useEffect(() => {
     if (currentChat?.id)
       dispatch(getAllMessages({ chatId: currentChat.id, token }));
-  }, [currentChat, dispatch, message.newMessage, token]);
+  }, [currentChat, dispatch, token]);
 
   useEffect(() => {
     dispatch(getUsersChat(token));
@@ -134,12 +122,11 @@ const Home = () => {
   };
   const handleCreateNewMessage = () => {
     setContent("");
-    dispatch(
-      createMessage({
-        token,
-        data: { chatId: currentChat.id, content: content },
-      })
-    );
+    const obj = {
+      token,
+      data: { chatId: currentChat.id, content: content },
+    };
+    dispatch(createMessage({ obj, sendMessageToServer }));
   };
   const handleNavigate = () => {
     handleClose();
@@ -188,7 +175,7 @@ const Home = () => {
             )}
 
             {!isProfile && !isGroup && (
-              <div className="w-full">
+              <div className="w-full ">
                 {
                   <div className="flex justify-between items-center p-3">
                     <div
@@ -202,7 +189,7 @@ const Home = () => {
                         }
                         alt=""
                       />
-                      <p>{auth.reqUser?.fullName}</p>
+                      <p className="cursor-pointer">{auth.reqUser?.fullName}</p>
                     </div>
                     <div className="space-x-3 text-2xl flex">
                       <div>
@@ -223,9 +210,6 @@ const Home = () => {
                             "aria-labelledby": "basic-button",
                           }}
                         >
-                          <MenuItem onClick={handleNavigate}>
-                            My Profile
-                          </MenuItem>
                           <MenuItem onClick={handleCreateGroup}>
                             Create group
                           </MenuItem>
@@ -238,7 +222,7 @@ const Home = () => {
 
                 <div className="relative flex justify-center items-center bg-white py-4 px-3">
                   <input
-                    className="border-none outline-none bg-slate-200 rounded-md w-[93%] pl-9 py-2"
+                    className="border-none outline-none bg-slate-200 rounded-md w-[97%] pl-16 py-2"
                     type="text"
                     placeholder="Search or start new chat"
                     onChange={(e) => {
@@ -247,7 +231,7 @@ const Home = () => {
                     }}
                     value={querys}
                   />
-                  <AiOutlineSearch className="left-10 top-7 absolute" />
+                  <AiOutlineSearch className="left-7 right-3 top-7 absolute" />
                 </div>
                 <div className="bg-white overflow-y-scroll h-[72vh] px-3">
                   {querys &&
@@ -273,12 +257,8 @@ const Home = () => {
                           <ChatCard
                             name={item.chatName}
                             userImg={item.chatImage || blankGroupPicture}
-                            lastMessage={
-                              item.messages[messages.length - 1]?.content
-                            }
-                            timeStamp={
-                              item.messages[messages.length - 1]?.timeStamp
-                            }
+                            lastMessage={messages[messages.length - 1]?.content}
+                            timeStamp={messages[messages.length - 1]?.timeStamp}
                           />
                         ) : (
                           <ChatCard
@@ -309,13 +289,26 @@ const Home = () => {
               <div className="max-w-[70%] text-center flex items-center flex-col">
                 <img className="w-[70%]" src={logo} alt="" />
                 <h1 className="text-4xl text-gray-600 font-light">
-                  Whatsapp Web
+                  Download WhatsApp for Windows
                 </h1>
-                <div className="my-9 font-light">
-                  Send and receive messages without keeping your phone online.
-                  <br />
-                  Use WhatsApp on up to 4 linked devices and 1 phone at the same
-                  time.
+                <div>
+                  <div className="my-9 font-light">
+                    Make calls, share your screen and get a faster experience
+                    when you download the
+                    <br />
+                    Windows app.
+                  </div>
+                  <div>
+                    <Link
+                      to={
+                        "ms-windows-store://pdp/?productid=9NKSQGP7F2NH&mode=mini&cid=68a40a"
+                      }
+                    >
+                      <button className="rounded-full bg-green-700 px-6 py-2 text-white font-semibold	">
+                        Get the app
+                      </button>
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
@@ -353,7 +346,7 @@ const Home = () => {
                 </div>
               </div>
               <div className="px-10 h-[85vh] overflow-y-scroll">
-                <div className="space-y-1 flex flex-col justify-center border mt-20 py-2">
+                <div className="space-y-1 flex flex-col justify-center mt-20 py-2">
                   {messages.length > 0 &&
                     messages?.map((item, i) => (
                       <MessageCard
@@ -362,12 +355,13 @@ const Home = () => {
                         content={item.content}
                       />
                     ))}
+                  <div ref={messagesEndRef} />
                 </div>
               </div>
               <div className="footer bg-[#f0f2f5] absolute w-full py-3 text-2xl">
                 <div className="flex justify-between items-center px-5 relative">
                   <input
-                    className="py-2 outline-none border-none bg-white pl-4 rounded-md w-[90%]"
+                    className="py-2 outline-none border-none bg-white text-lg pl-4 rounded-md w-[95%]"
                     type="text"
                     onChange={(e) => setContent(e.target.value)}
                     placeholder="Type a message"
@@ -378,7 +372,9 @@ const Home = () => {
                       }
                     }}
                   />
-                  <button onClick={handleCreateNewMessage}>Send</button>
+                  <button onClick={handleCreateNewMessage}>
+                    <PiPaperPlaneRightFill />
+                  </button>
                 </div>
               </div>
             </div>

@@ -10,7 +10,7 @@ public class HomeController {
 
 	@GetMapping("/")
 	public ResponseEntity<String> HomeControllerTest() {
-		return new ResponseEntity<String>("Welcome to Whatsapp Clone Web App", HttpStatus.OK);
+		return new ResponseEntity<String>("Welcome to WhatsApp Clone Web App", HttpStatus.OK);
 	}
 
 }
