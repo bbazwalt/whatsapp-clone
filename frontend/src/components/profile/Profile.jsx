@@ -1,9 +1,9 @@
+import { Avatar } from "@mui/material";
 import React, { useState } from "react";
 import { BsArrowLeft, BsCheck2, BsPencilFill } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
-import { updateUser } from "../../redux/auth/action";
-import { Avatar } from "@mui/material";
 import blankProfilePicture from "../../assets/blank-profile-picture.webp";
+import { updateUser } from "../../redux/auth/action";
 
 const Profile = ({ handleCloseOpenProfile }) => {
   const [flag, setFlag] = useState(false);

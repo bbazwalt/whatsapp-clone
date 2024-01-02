@@ -1,26 +1,26 @@
-import React, { useEffect, useRef, useState } from "react";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import React, { useEffect, useRef, useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import ChatCard from "../components/chatcard/ChatCard";
-import MessageCard from "../components/messagecard/MessageCard";
-import Profile from "../components/profile/Profile";
-import logo from "../assets/default-logo.png";
-import blankProfilePicture from "../assets/blank-profile-picture.webp";
-import blankGroupPicture from "../assets/blank-group-picture.jpg";
-import wallpaper from "../assets/wallpaper.jpg";
-import "../styles/Home.css";
-import { Link, useNavigate } from "react-router-dom";
-import CreateGroup from "../components/group/CreateGroup";
+import { PiPaperPlaneRightFill } from "react-icons/pi";
 import { useDispatch, useSelector } from "react-redux";
-import { currentUser, logout, searchUser } from "../redux/auth/action";
-import { createChat, getUsersChat } from "../redux/chat/action";
-import { createMessage, getAllMessages } from "../redux/message/action";
+import { Link, useNavigate } from "react-router-dom";
 import SockJS from "sockjs-client";
 import Stom from "stompjs";
 import { BASE_API_URL } from "../api/api";
-import { PiPaperPlaneRightFill } from "react-icons/pi";
+import blankGroupPicture from "../assets/blank-group-picture.jpg";
+import blankProfilePicture from "../assets/blank-profile-picture.webp";
+import logo from "../assets/default-logo.png";
+import wallpaper from "../assets/wallpaper.jpg";
+import ChatCard from "../components/chatcard/ChatCard";
+import CreateGroup from "../components/group/CreateGroup";
+import MessageCard from "../components/messagecard/MessageCard";
+import Profile from "../components/profile/Profile";
+import { currentUser, logout, searchUser } from "../redux/auth/action";
+import { createChat, getUsersChat } from "../redux/chat/action";
+import { createMessage, getAllMessages } from "../redux/message/action";
+import "../styles/Home.css";
 const Home = () => {
   const navigate = useNavigate();
   const [messages, setMessages] = useState([]);
@@ -40,6 +40,7 @@ const Home = () => {
   useEffect(() => {
     const sock = new SockJS(BASE_API_URL + "/ws");
     const stomp = Stom.over(sock);
+    stomp.debug = () => {};
     setStomClient(stomp);
     stomp.connect({}, onConnect, onErr);
   }, []);
@@ -92,11 +93,13 @@ const Home = () => {
   };
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      scrollToBottom();
-    }, 100);
-    return () => clearTimeout(timer);
-  }, [messages]);
+    if (messages.length > 0) {
+      const timer = setTimeout(() => {
+        scrollToBottom();
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [messages.length]);
 
   useEffect(() => {
     if (currentChat?.id)

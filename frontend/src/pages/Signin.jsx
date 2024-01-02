@@ -1,9 +1,9 @@
-import { Button, Snackbar, Alert, Avatar } from "@mui/material";
+import { Alert, Avatar, Button, Snackbar } from "@mui/material";
 import { green } from "@mui/material/colors";
-import logo from "../assets/whatsapp-icon.svg.webp";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import logo from "../assets/whatsapp-icon.svg.webp";
 import { currentUser, login } from "../redux/auth/action";
 
 const Signin = () => {
@@ -57,7 +57,6 @@ const Signin = () => {
                 type="text"
                 name="email"
                 className="py-2 px-3 border-4 w-full rounded-md "
-                required
               />
             </div>
             <div>
@@ -69,7 +68,6 @@ const Signin = () => {
                 type="password"
                 name="password"
                 className="py-2 px-3 border-4 border-blue w-full rounded-md "
-                required
               />
             </div>
             <div>

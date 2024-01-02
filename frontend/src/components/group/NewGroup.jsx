@@ -1,9 +1,9 @@
+import { Avatar, Button, CircularProgress } from "@mui/material";
 import React, { useState } from "react";
 import { BsArrowLeft, BsCheck2 } from "react-icons/bs";
-import { Avatar, Button, CircularProgress } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { createGroupChat } from "../../redux/chat/action";
 import blankGroupPicture from "../../assets/blank-group-picture.jpg";
+import { createGroupChat } from "../../redux/chat/action";
 
 const NewGroup = ({ groupMember, setIsGroup, setNewGroup }) => {
   const [isImageUploading, setIsImageUploading] = useState(false);
